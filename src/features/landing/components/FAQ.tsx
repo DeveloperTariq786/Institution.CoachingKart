@@ -36,7 +36,7 @@ const faqs = [
   },
   {
     question: "Can we add multiple centers for our tuition?",
-    answer: "Yes, you can add multiple centers and anage all of them under one Institution."
+    answer: "Yes, you can add multiple centers and manage all of them under one Institution."
   }
 ];
 

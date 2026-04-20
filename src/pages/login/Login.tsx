@@ -28,17 +28,16 @@ const Login = () => {
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-100/50 rounded-full blur-[120px] pointer-events-none" />
 
             <div className="z-10 w-full max-w-md animate-in fade-in zoom-in duration-500">
-                <div className="flex justify-center mb-8">
-                    <Link to={ROUTES.LANDING} className="flex flex-col items-center gap-4">
-                        <span className="text-3xl font-black tracking-tight text-slate-900">Coaching<span className="text-sky-600">Kart</span></span>
-                    </Link>
-                </div>
-
                 <Card className="border-slate-200 bg-white shadow-2xl glass-card px-2 py-4">
-                    <CardHeader className="space-y-1">
+                    <CardHeader className="space-y-0 flex flex-col items-center">
+                        <img 
+                            src="/assets/icon-logo.png" 
+                            alt="Logo" 
+                            className="h-40 w-40 object-contain mb-[-24px] z-10" 
+                        />
                         <CardTitle className="text-2xl font-bold text-center text-slate-900">Welcome Back</CardTitle>
                         <CardDescription className="text-center text-slate-500">
-                            Please enter your creddenatils to Sign In
+                            Please enter your credentials to Sign In
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4 pt-4">

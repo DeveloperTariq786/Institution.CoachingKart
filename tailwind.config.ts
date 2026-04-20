@@ -47,31 +47,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Sky Blue Palette
-        sky: {
-          50: "hsl(var(--sky-50))",
-          100: "hsl(var(--sky-100))",
-          200: "hsl(var(--sky-200))",
-          300: "hsl(var(--sky-300))",
-          400: "hsl(var(--sky-400))",
-          500: "hsl(var(--sky-500))",
-          600: "hsl(var(--sky-600))",
-          700: "hsl(var(--sky-700))",
-          800: "hsl(var(--sky-800))",
-          900: "hsl(var(--sky-900))",
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
         },
-        // Slate Colors
-        slate: {
-          50: "hsl(var(--slate-50))",
-          100: "hsl(var(--slate-100))",
-          200: "hsl(var(--slate-200))",
-          300: "hsl(var(--slate-300))",
-        },
-        // Dark backgrounds
-        dark: {
-          700: "hsl(var(--dark-700))",
-          800: "hsl(var(--dark-800))",
-          900: "hsl(var(--dark-900))",
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -85,7 +67,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['"Public Sans"', 'system-ui', 'sans-serif'],
+        manrope: ['Manrope', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -7,9 +7,9 @@ interface DashboardHeaderProps {
   userName?: string;
 }
 
-const DashboardHeader = ({ onMenuClick, userName }: DashboardHeaderProps) => {
+const DashboardHeader = ({ onMenuClick }: DashboardHeaderProps) => {
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-6">
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-white px-6">
       {/* Mobile menu button */}
       <Button
         variant="ghost"
@@ -22,11 +22,6 @@ const DashboardHeader = ({ onMenuClick, userName }: DashboardHeaderProps) => {
 
       {/* Spacer */}
       <div className="flex-1" />
-
-      {/* Right side - Profile Dropdown */}
-      <div className="flex items-center ml-auto">
-        <ProfileDropdown userName={userName} />
-      </div>
     </header>
   );
 };

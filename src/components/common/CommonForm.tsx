@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { LucideIcon, Eye, EyeOff } from "lucide-react";
+import { LucideIcon, Eye, EyeOff, X } from "lucide-react";
 import {
     Select,
     SelectContent,
@@ -18,17 +18,19 @@ export interface FormFieldConfig {
     label: string;
     type?: string;
     placeholder?: string;
-    value: string;
-    onChange: (value: string | any) => void;
+    value: any;
+    onChange: (value: any) => void;
     required?: boolean;
     icon?: LucideIcon;
-    componentType?: 'input' | 'textarea' | 'select' | 'custom';
+    componentType?: 'input' | 'textarea' | 'select' | 'custom' | 'file';
     options?: string[];
     customComponent?: ReactNode;
     className?: string;
     error?: string;
     minLength?: number;
     colSpan?: 1 | 2;
+    accept?: string;
+    disabled?: boolean;
 }
 
 interface CommonFormProps {
@@ -69,6 +71,7 @@ const FormInput = ({ field }: { field: FormFieldConfig }) => {
                     isPassword ? "pr-12" : "",
                     field.className
                 )}
+                disabled={field.disabled}
             />
             {isPassword && (
                 <button
@@ -157,12 +160,14 @@ const CommonForm = ({
                                     onChange={(e) => field.onChange(e.target.value)}
                                     required={field.required}
                                     className={cn("min-h-[100px] resize-none pl-11 pt-3 text-sm focus-visible:ring-primary/20", field.className)}
+                                    disabled={field.disabled}
                                 />
                             ) : field.componentType === 'select' ? (
                                 <Select
                                     value={field.value}
                                     onValueChange={field.onChange}
                                     required={field.required}
+                                    disabled={field.disabled}
                                 >
                                     <SelectTrigger className={cn("h-10 pl-11 text-sm focus-visible:ring-primary/20", field.className)}>
                                         <SelectValue placeholder={field.placeholder} />
@@ -175,6 +180,50 @@ const CommonForm = ({
                                         ))}
                                     </SelectContent>
                                 </Select>
+                            ) : field.componentType === 'file' ? (
+                                <div className="space-y-3">
+                                    <Input
+                                        id={field.id}
+                                        type="file"
+                                        onChange={(e) => field.onChange(e.target.files ? e.target.files[0] : null)}
+                                        required={field.required}
+                                        className={cn("h-10 pl-11 pt-2 text-sm focus-visible:ring-primary/20", field.className)}
+                                        accept={field.accept}
+                                    />
+                                    {field.value instanceof File && field.value.type.startsWith('image/') && (
+                                        <div className="relative w-32 h-32 rounded-lg border overflow-hidden bg-slate-50">
+                                            <img
+                                                src={URL.createObjectURL(field.value)}
+                                                alt="Preview"
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => field.onChange(null)}
+                                                className="absolute top-1 right-1 bg-white/80 rounded-full p-1 shadow-sm hover:bg-white"
+                                            >
+                                                <X className="h-4 w-4 text-slate-600" />
+                                            </button>
+                                        </div>
+                                    )}
+                                    {field.value instanceof File && !field.value.type.startsWith('image/') && (
+                                        <div className="flex items-center gap-2 p-3 rounded-lg border bg-slate-50 text-sm text-slate-600">
+                                            <div className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+                                                <X className="h-4 w-4 text-primary" /> {/* Generic Icon */}
+                                            </div>
+                                            <div className="flex-1 truncate">
+                                                {field.value.name}
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => field.onChange(null)}
+                                                className="text-slate-400 hover:text-destructive"
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
                             ) : field.componentType === 'custom' ? (
                                 field.customComponent
                             ) : (

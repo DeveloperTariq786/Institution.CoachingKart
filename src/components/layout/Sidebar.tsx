@@ -1,10 +1,12 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, BookOpen, PanelLeftClose, PanelLeft, Building2, ChevronDown, List, MapPin, GraduationCap, UserCog, Layers, Users2, ClipboardList, FileText, Palette, Images } from "lucide-react";
+import { LayoutDashboard, Users, BookOpen, PanelLeftClose, PanelLeft, Building2, ChevronDown, List, MapPin, GraduationCap, UserCog, Layers, Users2, ClipboardList, FileText, Palette, Images, Book } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ROUTES } from "@/core/routes/paths";
+import ProfileDropdown from "@/components/profile/ProfileDropdown";
+import { useAuthStore } from "@/core/store/auth.store";
 
 interface NavItem {
   icon: React.ElementType;
@@ -21,8 +23,9 @@ const navItems: NavItem[] = [
     label: "Courses",
     path: ROUTES.COURSES,
     subItems: [
-      { label: "Manage Courses", path: ROUTES.COURSES, icon: List },
+      { label: "Courses", path: ROUTES.COURSES, icon: List },
       { label: "Programs", path: ROUTES.PROGRAMS, icon: Layers },
+      { label: "Subjects", path: ROUTES.SUBJECTS, icon: Book },
       { label: "Batches", path: ROUTES.BATCHES, icon: ClipboardList },
     ]
   },
@@ -31,25 +34,29 @@ const navItems: NavItem[] = [
     label: "Users",
     path: ROUTES.STUDENTS,
     subItems: [
-      { label: "Students", path: ROUTES.STUDENTS, icon: GraduationCap },
       { label: "Admins", path: ROUTES.ADMINS, icon: UserCog },
+      { label: "Students", path: ROUTES.STUDENTS, icon: GraduationCap },
+      { label: "Faculties", path: ROUTES.FACULTY, icon: Users2 },
     ]
   },
-  { icon: Users2, label: "Faculty", path: ROUTES.FACULTY },
   { icon: MapPin, label: "Centers", path: ROUTES.CENTERS },
   { icon: FileText, label: "Results", path: ROUTES.RESULTS },
   { icon: Images, label: "Media", path: ROUTES.MEDIA },
   { icon: Palette, label: "Customization", path: ROUTES.CUSTOMIZATION },
 ];
+
 interface DashboardSidebarProps {
   collapsed: boolean;
   onToggle: () => void;
+  userName?: string;
 }
 
-const DashboardSidebar = ({ collapsed, onToggle }: DashboardSidebarProps) => {
+const DashboardSidebar = ({ collapsed, onToggle, userName }: DashboardSidebarProps) => {
   const location = useLocation();
+  const { user, role } = useAuthStore();
+  const displayName = userName || user?.name || "User";
+  const displayRole = role?.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') || "Admin";
 
-  // Find which menu contains the current route
   const getActiveMenu = () => {
     const activeItem = navItems.find(
       item => item.subItems?.some(sub => location.pathname === sub.path)
@@ -60,11 +67,9 @@ const DashboardSidebar = ({ collapsed, onToggle }: DashboardSidebarProps) => {
   const [openMenu, setOpenMenu] = useState<string | null>(getActiveMenu);
 
   const toggleMenu = (label: string) => {
-    // Accordion behavior: close if already open, otherwise open this one (closing others)
     setOpenMenu((prev) => (prev === label ? null : label));
   };
 
-  // Keep the menu open if it contains the active route
   const isMenuOpen = (label: string) => {
     const containsActiveRoute = navItems
       .find(item => item.label === label)
@@ -74,29 +79,26 @@ const DashboardSidebar = ({ collapsed, onToggle }: DashboardSidebarProps) => {
 
   return (
     <aside className={cn(
-      "fixed left-0 top-0 z-40 h-screen border-r bg-card flex flex-col transition-all duration-300",
+      "fixed left-0 top-0 z-40 h-screen border-r bg-sidebar flex flex-col transition-all duration-300",
       collapsed ? "w-16" : "w-64"
     )}>
-      {/* Logo Header - matches main header height */}
+      {/* Logo Header */}
       <div className={cn(
-        "flex items-center h-16 border-b px-4",
-        collapsed ? "justify-center" : "gap-2"
+        "flex items-center h-16 border-b border-sidebar-border px-4",
+        collapsed ? "justify-center" : "px-4"
       )}>
-        <svg
-          viewBox="0 0 24 24"
-          className="h-8 w-8 text-primary shrink-0"
-          fill="currentColor"
-        >
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-            stroke="currentColor"
-            strokeWidth="2"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        {collapsed ? (
+          <img 
+            src="/assets/icon-logo.png" 
+            alt="Logo" 
+            className="h-20 w-20 max-w-none object-contain z-10" 
           />
-        </svg>
-        {!collapsed && (
-          <span className="text-xl font-bold text-foreground">ClassConnect</span>
+        ) : (
+          <img 
+            src="/assets/full-logo.webp" 
+            alt="Coachingkart" 
+            className="h-24 object-contain z-10" 
+          />
         )}
       </div>
 
@@ -115,8 +117,8 @@ const DashboardSidebar = ({ collapsed, onToggle }: DashboardSidebarProps) => {
                     className={cn(
                       "flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all w-full",
                       isActive
-                        ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        ? "bg-sidebar-accent text-sidebar-primary"
+                        : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-primary"
                     )}
                   >
                     <item.icon className="h-5 w-5 shrink-0" />
@@ -137,8 +139,8 @@ const DashboardSidebar = ({ collapsed, onToggle }: DashboardSidebarProps) => {
                         className={cn(
                           "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all",
                           isSubActive
-                            ? "bg-primary text-primary-foreground"
-                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                            ? "bg-sidebar-primary text-sidebar-primary-foreground font-semibold"
+                            : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-primary"
                         )}
                       >
                         <subItem.icon className="h-4 w-4 shrink-0" />
@@ -159,8 +161,8 @@ const DashboardSidebar = ({ collapsed, onToggle }: DashboardSidebarProps) => {
                 "flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all",
                 collapsed && "justify-center px-0",
                 isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-sidebar-primary text-sidebar-primary-foreground"
+                  : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-primary"
               )}
               title={collapsed ? item.label : undefined}
             >
@@ -171,14 +173,33 @@ const DashboardSidebar = ({ collapsed, onToggle }: DashboardSidebarProps) => {
         })}
       </nav>
 
+      {/* Profile Section */}
+      <div className={cn(
+        "p-3 border-t border-sidebar-border mt-auto",
+        collapsed ? "flex justify-center" : "flex flex-col gap-2"
+      )}>
+        <div className={cn(
+          "flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-accent transition-colors",
+          collapsed && "justify-center px-0"
+        )}>
+          <ProfileDropdown userName={displayName} />
+          {!collapsed && (
+            <div className="flex flex-col overflow-hidden">
+              <span className="text-sm font-semibold text-sidebar-primary truncate">{displayName}</span>
+              <span className="text-xs text-sidebar-foreground truncate">{displayRole}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Collapse Toggle Button */}
-      <div className="border-t p-3">
+      <div className="border-t border-sidebar-border p-3">
         <Button
           variant="ghost"
           size="sm"
           onClick={onToggle}
           className={cn(
-            "w-full justify-center",
+            "w-full justify-center text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-primary",
             !collapsed && "justify-start"
           )}
         >

@@ -1,14 +1,6 @@
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Youtube, Linkedin } from "lucide-react";
 
 const Footer = () => {
-  const socialLinks = [
-    { icon: Facebook, href: "#" },
-    { icon: Twitter, href: "#" },
-    { icon: Instagram, href: "#" },
-    { icon: Youtube, href: "#" },
-    { icon: Linkedin, href: "#" },
-  ];
 
 
   return (
@@ -17,32 +9,23 @@ const Footer = () => {
         <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
           {/* Logo & Description */}
           <div className="text-center md:text-left">
-            <Link to="/" className="flex items-center justify-center gap-2 md:justify-start group">
-              <span className="text-xl font-black tracking-tight text-slate-900">Coaching<span className="text-sky-500">Kart</span></span>
+            <Link to="/" className="flex items-center justify-center relative h-12 w-[180px] md:justify-start group mx-auto md:mx-0">
+              <img 
+                src="/assets/full-logo.webp" 
+                alt="Coachingkart" 
+                className="h-20 absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 top-1/2 -translate-y-1/2 object-contain" 
+              />
             </Link>
             <p className="mt-2 text-sm text-muted-foreground">
               Digitizing Your Coaching Institutions
             </p>
           </div>
 
-          {/* Copyright Section (Center) */}
-          <div className="text-center">
+          {/* Copyright Section (Right) */}
+          <div className="text-center md:text-right">
             <p className="text-sm text-muted-foreground">
-              © 2024 CoachingKart. All rights reserved.
+              © {new Date().getFullYear()} <span className="font-bold text-sky-500">CoachingKart</span>. All rights reserved.
             </p>
-          </div>
-
-          {/* Social Links */}
-          <div className="flex gap-3">
-            {socialLinks.map((social, index) => (
-              <a
-                key={index}
-                href={social.href}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-all hover:bg-primary hover:text-primary-foreground"
-              >
-                <social.icon className="h-4 w-4" />
-              </a>
-            ))}
           </div>
         </div>
       </div>

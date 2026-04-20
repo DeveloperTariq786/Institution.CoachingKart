@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
-import { GraduationCap, HelpCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { EXTERNAL_LINKS } from "@/core/data/external-links";
 import OnboardingProgress from "./OnboardingProgress";
 
 interface OnboardingLayoutProps {
@@ -16,14 +17,23 @@ const OnboardingLayout = ({ children, currentStep }: OnboardingLayoutProps) => {
       {/* Header */}
       <header className="border-b bg-background/80 backdrop-blur-sm px-6 py-4 sticky top-0 z-50">
         <div className="container mx-auto flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-4 group text-center lg:text-left">
-            <span className="text-xl font-black tracking-tight text-slate-900">Coaching<span className="text-sky-600">Kart</span></span>
+          <Link to="/" className="flex items-center h-10 w-[180px] relative shrink-0">
+            <img 
+              src="/assets/full-logo.webp" 
+              alt="Coachingkart" 
+              className="h-18 absolute left-0 top-1/2 -translate-y-1/2 object-contain" 
+            />
           </Link>
 
-          <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-lg px-3 py-2 hover:bg-primary/5">
+          <a 
+             href={EXTERNAL_LINKS.HELP_VIDEO}
+             target="_blank"
+             rel="noopener noreferrer"
+             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-lg px-3 py-2 hover:bg-primary/5"
+          >
             <HelpCircle className="h-4 w-4" />
             Need Help?
-          </button>
+          </a>
         </div>
       </header>
 

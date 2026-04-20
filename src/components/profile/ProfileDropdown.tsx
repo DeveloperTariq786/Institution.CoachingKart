@@ -43,20 +43,20 @@ export const ProfileDropdown = ({ userName }: ProfileDropdownProps) => {
                         <span className="text-sm font-bold tracking-tight">{initials}</span>
                     </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-64 p-2 shadow-xl border-slate-200">
+                <DropdownMenuContent align="end" className="w-64 p-2 shadow-2xl border-border bg-card">
                     <DropdownMenuLabel className="font-normal p-3">
                         <div className="flex flex-col space-y-2">
                             <div className="flex items-center gap-2">
-                                <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
-                                    <User className="h-4 w-4 text-slate-500" />
+                                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center border border-border">
+                                    <User className="h-4 w-4 text-muted-foreground" />
                                 </div>
-                                <p className="text-sm font-bold leading-none text-slate-900 line-clamp-1">{user?.name}</p>
+                                <p className="text-sm font-bold leading-none text-foreground line-clamp-1 font-manrope">{user?.name || "User"}</p>
                             </div>
-                            <div className="flex items-center gap-2 text-xs text-slate-500">
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                 <Mail className="h-3.5 w-3.5" />
                                 <span className="line-clamp-1">{user?.email}</span>
                             </div>
-                            <div className="flex items-center gap-2 text-xs font-semibold px-2 py-1 bg-sky-50 text-sky-700 rounded-md self-start border border-sky-100 uppercase tracking-wider">
+                            <div className="flex items-center gap-2 text-xs font-bold px-2 py-1 bg-primary/10 text-primary rounded-md self-start border border-primary/20 uppercase tracking-wider">
                                 <Shield className="h-3 w-3" />
                                 {formatRole(role)}
                             </div>

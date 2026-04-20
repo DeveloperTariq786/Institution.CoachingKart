@@ -1,43 +1,42 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Plus } from "lucide-react";
+import { Plus, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ROUTES } from "@/core/routes/paths";
+import { useCenters } from "@/features/centers/hooks/useCenters";
+import { CenterList } from "@/features/centers/components/CenterList";
+import { useEffect } from "react";
 
 const Centers = () => {
+  const { centers, isLoading, fetchCenters } = useCenters();
+
+  useEffect(() => {
+    fetchCenters();
+  }, [fetchCenters]);
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Centers</h1>
-            <p className="text-muted-foreground mt-1">
-              Manage your institution's physical locations
+            <h1 className="text-2xl font-bold text-slate-900">Centers</h1>
+            <p className="text-slate-500 mt-1">
+              Manage your institution's physical locations and branches.
             </p>
           </div>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Center
+          <Button className="shadow-sm" asChild>
+            <Link to={ROUTES.CENTERS_ADD}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Center
+            </Link>
           </Button>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MapPin className="h-5 w-5" />
-              Your Centers
-            </CardTitle>
-            <CardDescription>
-              Add and manage your institution's branches and locations
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-12 text-muted-foreground">
-              <MapPin className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p className="text-lg font-medium">No centers added yet</p>
-              <p className="text-sm mt-1">Add your first center to get started</p>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Content Section */}
+        <div className="space-y-4">
+          <CenterList centers={centers} isLoading={isLoading} />
+        </div>
       </div>
     </DashboardLayout>
   );

@@ -27,7 +27,7 @@ const LandingButton = ({
     const variants = {
         primary: "bg-[#0f172a] text-white hover:bg-slate-800 shadow-slate-900/20",
         sky: "bg-sky-500 text-white hover:bg-sky-600 shadow-sky-500/20",
-        outline: "border-2 border-slate-200 bg-transparent text-slate-900 hover:bg-slate-50 shadow-none",
+        outline: "border-2 border-[#0f172a] bg-transparent text-[#0f172a] hover:bg-[#0f172a] hover:text-white shadow-none",
         ghost: "bg-transparent text-slate-600 hover:bg-slate-100 shadow-none"
     };
 

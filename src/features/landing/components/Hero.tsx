@@ -1,5 +1,6 @@
 import { ROUTES } from "@/core/routes/paths";
 import LandingButton from "@/components/common/LandingButton";
+import { EXTERNAL_LINKS } from "@/core/data/external-links";
 
 const Hero = () => {
   return (
@@ -30,6 +31,14 @@ const Hero = () => {
               variant="sky"
               size="md"
               rounded="full"
+            />
+            <LandingButton
+              text="Watch Demo"
+              className="w-full sm:w-auto"
+              variant="primary"
+              size="md"
+              rounded="full"
+              onClick={() => window.open(EXTERNAL_LINKS.HELP_VIDEO, '_blank')}
             />
           </div>
         </div>

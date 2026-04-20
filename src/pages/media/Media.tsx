@@ -1,98 +1,93 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ROUTES } from "@/core/routes/paths";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Images, LayoutTemplate, Save, FileText } from "lucide-react";
+import { Images, LayoutTemplate, Save, FileText, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import DashboardLayout, { useSidebarState } from "@/components/layout/DashboardLayout";
-import MediaGallery, { GalleryImage } from "@/features/media/components/MediaGallery";
-import MediaBanners, { BannerItem } from "@/features/media/components/MediaBanners";
+import MediaGallery from "@/features/media/components/MediaGallery";
+import MediaBanners from "@/features/media/components/MediaBanners";
 import About from "@/features/media/components/About";
+import { useGallery } from "@/features/media/hooks/useGallery";
+import { useBanner } from "@/features/media/hooks/useBanner";
+import { useAbout } from "@/features/media/hooks/useAbout";
+import { UpdateAboutRequest } from "@/features/media/types";
 
 const Media = () => {
     const { collapsed } = useSidebarState();
+    const [searchParams, setSearchParams] = useSearchParams();
 
-    // Banner Section State
-    const [banners, setBanners] = useState<BannerItem[]>([
-        {
-            id: "1",
-            image: "",
-            heading: "Welcome to Excellence Academy",
-            description: "Your journey to success starts here"
+    // Tab state - initialized from URL or default to gallery
+    const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "gallery");
+
+    // Sync state with URL if it changes externally
+    useEffect(() => {
+        const tab = searchParams.get("tab");
+        if (tab && tab !== activeTab) {
+            setActiveTab(tab);
         }
-    ]);
+    }, [searchParams]);
+
+    const handleTabChange = (value: string) => {
+        setActiveTab(value);
+        setSearchParams({ tab: value });
+    };
 
     // Gallery Section State
-    const [gallery, setGallery] = useState<GalleryImage[]>([]);
+    const { gallery, isLoading: isGalleryLoading, deleteGalleryItem } = useGallery();
+
+    // Banner Section State
+    const { banners, isLoading: isBannerLoading, deleteBannerItem } = useBanner();
 
     // About Section State
-    const [aboutContent, setAboutContent] = useState("<p>Welcome to our institution. We are dedicated to providing quality education...</p>");
+    const { about, isLoading: isAboutLoading, updateAbout, isUpdating } = useAbout();
+    const [aboutData, setAboutData] = useState<UpdateAboutRequest>({
+        title: "",
+        description: "",
+        image: "",
+        visionTitle: "Our Vision",
+        visionContent: "",
+        missionTitle: "Our Mission",
+        missionContent: ""
+    });
 
-    const handleSave = () => {
-        toast.success("Media settings saved successfully!");
-    };
-
-    // Banner handlers
-    const handleBannerImageUpload = (bannerId: string, e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setBanners(prev => prev.map(b =>
-                    b.id === bannerId ? { ...b, image: reader.result as string } : b
-                ));
-            };
-            reader.readAsDataURL(file);
+    // Update local state when fetched about data changes
+    useEffect(() => {
+        if (about) {
+            setAboutData({
+                title: about.title || "",
+                description: about.description || "",
+                image: about.image || "",
+                visionTitle: about.visionTitle || "Our Vision",
+                visionContent: about.visionContent || "",
+                missionTitle: about.missionTitle || "Our Mission",
+                missionContent: about.missionContent || ""
+            });
         }
-    };
+    }, [about]);
 
-    const addBanner = () => {
-        const newBanner: BannerItem = {
-            id: Date.now().toString(),
-            image: "",
-            heading: "",
-            description: ""
-        };
-        setBanners(prev => [...prev, newBanner]);
-    };
-
-    const removeBanner = (id: string) => {
-        setBanners(prev => prev.filter(b => b.id !== id));
-    };
-
-    const updateBanner = (id: string, field: keyof BannerItem, value: string) => {
-        setBanners(prev => prev.map(b =>
-            b.id === id ? { ...b, [field]: value } : b
-        ));
+    const handleSave = async () => {
+        if (activeTab === "about") {
+            try {
+                await updateAbout(aboutData);
+            } catch (error) {
+                // Error handled by hook
+            }
+        } else {
+            toast.success("Media settings saved successfully!");
+        }
     };
 
     // Gallery handlers
-    const handleGalleryUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (files) {
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const newImage: GalleryImage = {
-                        id: Date.now().toString() + Math.random(),
-                        url: reader.result as string,
-                        caption: file.name.replace(/\.[^/.]+$/, "")
-                    };
-                    setGallery(prev => [...prev, newImage]);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
+    const removeGalleryImage = async (id: string) => {
+        await deleteGalleryItem(id);
     };
 
-    const removeGalleryImage = (id: string) => {
-        setGallery(prev => prev.filter(img => img.id !== id));
-    };
-
-    const updateGalleryCaption = (id: string, caption: string) => {
-        setGallery(prev => prev.map(img =>
-            img.id === id ? { ...img, caption } : img
-        ));
+    // Banner handlers
+    const removeBanner = async (id: string) => {
+        await deleteBannerItem(id);
     };
 
     return (
@@ -106,7 +101,7 @@ const Media = () => {
                     <p className="text-muted-foreground">Manage your institution's gallery, banner images, and about information.</p>
                 </div>
 
-                <Tabs defaultValue="gallery" className="w-full">
+                <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
                     <TabsList className="grid w-full grid-cols-3 mb-6">
                         <TabsTrigger value="gallery" className="gap-2">
                             <Images className="h-4 w-4" />
@@ -123,39 +118,70 @@ const Media = () => {
                     </TabsList>
 
                     <TabsContent value="gallery" className="space-y-6">
+                        <div className="flex items-center justify-end">
+                            <Button asChild className="h-9">
+                                <Link to={ROUTES.MEDIA_GALLERY_ADD}>
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Add Gallery Images
+                                </Link>
+                            </Button>
+                        </div>
                         <MediaGallery
                             gallery={gallery}
-                            onUpload={handleGalleryUpload}
                             onRemove={removeGalleryImage}
-                            onUpdateCaption={updateGalleryCaption}
+                            isLoading={isGalleryLoading}
                         />
                     </TabsContent>
 
                     <TabsContent value="banners" className="space-y-6">
+                        <div className="flex items-center justify-end">
+                            <Button asChild className="h-9">
+                                <Link to={ROUTES.MEDIA_BANNER_ADD}>
+                                    <Plus className="h-4 w-4 mr-2" />
+                                    Add Banners
+                                </Link>
+                            </Button>
+                        </div>
                         <MediaBanners
                             banners={banners}
-                            onImageUpload={handleBannerImageUpload}
-                            onAdd={addBanner}
                             onRemove={removeBanner}
-                            onUpdate={updateBanner}
+                            isLoading={isBannerLoading}
                         />
                     </TabsContent>
 
                     <TabsContent value="about" className="space-y-6">
                         <About
-                            content={aboutContent}
-                            onChange={setAboutContent}
+                            data={aboutData}
+                            onChange={(updatedData: Partial<UpdateAboutRequest>) => 
+                                setAboutData(prev => ({ ...prev, ...updatedData }))
+                            }
                         />
                     </TabsContent>
                 </Tabs>
 
-                {/* Save Button */}
-                <div className="flex justify-end pb-6">
-                    <Button onClick={handleSave} size="lg" className="gap-2">
-                        <Save className="h-4 w-4" />
-                        Save Changes
-                    </Button>
-                </div>
+                {/* Save Button - Only for About tab */}
+                {activeTab === "about" && (
+                    <div className="flex justify-end pb-6">
+                        <Button
+                            onClick={handleSave}
+                            size="lg"
+                            className="gap-2"
+                            disabled={isUpdating || isAboutLoading}
+                        >
+                            {isUpdating ? (
+                                <span className="flex items-center gap-2">
+                                    <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                    Saving...
+                                </span>
+                            ) : (
+                                <>
+                                    <Save className="h-4 w-4" />
+                                    Save Changes
+                                </>
+                            )}
+                        </Button>
+                    </div>
+                )}
             </div>
         </DashboardLayout>
     );

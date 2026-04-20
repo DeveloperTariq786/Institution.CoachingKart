@@ -6,8 +6,12 @@ const Header = () => {
     <header className="fixed top-6 left-0 right-0 z-50 px-4 md:px-8 lg:px-12">
       <div className="mx-auto max-w-7xl rounded-full border border-slate-200 bg-white/70 px-6 py-2 backdrop-blur-xl shadow-lg flex items-center justify-between">
         {/* Logo */}
-        <Link to={ROUTES.LANDING} className="flex items-center gap-2 group shrink-0">
-          <span className="text-xl font-black tracking-tight text-slate-900">Coaching<span className="text-sky-500">Kart</span></span>
+        <Link to={ROUTES.LANDING} className="flex items-center h-10 w-[180px] relative shrink-0">
+          <img 
+            src="/assets/full-logo.webp" 
+            alt="Coachingkart" 
+            className="h-18 absolute left-0 top-1/2 -translate-y-1/2 object-contain" 
+          />
         </Link>
 
         {/* Navigation Links - Centered */}

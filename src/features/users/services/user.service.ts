@@ -17,7 +17,7 @@ export const userService = {
         return response.data.data;
     },
     getStudents: async (page = 1, limit = 10): Promise<InstitutionStudent[]> => {
-        const response = await apiClient.get<ApiResponse<InstitutionStudent[]>>(INSTITUTION_ENDPOINTS.STUDENT_USERS, {
+        const response = await apiClient.get<ApiResponse<InstitutionStudent[]>>(INSTITUTION_ENDPOINTS.STUDENT, {
             params: {
                 page,
                 limit,
@@ -26,7 +26,7 @@ export const userService = {
         return response.data.data;
     },
     createStudent: async (payload: CreateStudentPayload): Promise<any> => {
-        const response = await apiClient.post(INSTITUTION_ENDPOINTS.STUDENT_USERS, payload);
+        const response = await apiClient.post(INSTITUTION_ENDPOINTS.STUDENT, payload);
         return response.data;
     },
 };
