@@ -12,7 +12,6 @@ import { Program } from "@/features/programs/types/program";
 import { ProgramRowInfo } from "@/features/programs/components/ProgramRowInfo";
 import { useCourses } from "@/features/courses/hooks/useCourses";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from "@/components/ui/label";
 import {
   Pagination,
   PaginationContent,
@@ -27,6 +26,7 @@ const Programs = () => {
   const [selectedCourseId, setSelectedCourseId] = useState<string>("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [programToDelete, setProgramToDelete] = useState<Program | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -56,7 +56,10 @@ const Programs = () => {
 
   const handleConfirmDelete = async () => {
     if (programToDelete) {
+      setIsDeleting(true);
       await deleteProgram(programToDelete.id);
+      setIsDeleting(false);
+      setDeleteDialogOpen(false);
       setProgramToDelete(null);
     }
   };
@@ -93,9 +96,11 @@ const Programs = () => {
       className: "text-right w-[150px]",
       cell: (program) => (
         <div className="flex justify-end gap-2 text-right">
-          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100">
-            <Pencil className="h-4 w-4 text-slate-500" />
-          </Button>
+          <Link to={ROUTES.PROGRAMS_EDIT.replace(":programId", program.id)}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100">
+              <Pencil className="h-4 w-4 text-slate-500" />
+            </Button>
+          </Link>
           <Button
             variant="ghost"
             size="icon"
@@ -200,6 +205,7 @@ const Programs = () => {
         onConfirm={handleConfirmDelete}
         title="Delete Program"
         itemName={programToDelete?.name}
+        isLoading={isDeleting}
       />
     </DashboardLayout >
   );

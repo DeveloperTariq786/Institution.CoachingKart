@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Pencil, Trash2, Video, Book, User, Clock, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
-import { Link, useParams, useSearchParams, useLocation } from "react-router-dom";
+import { Link, useParams, useSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { ROUTES } from "@/core/routes/paths";
@@ -28,6 +28,7 @@ const Lectures = () => {
     const { batchId } = useParams<{ batchId?: string }>();
     const [searchParams, setSearchParams] = useSearchParams();
     const location = useLocation();
+    const navigate = useNavigate();
     const { profile } = useInstitutionProfile();
     const institutionId = profile?.id;
 
@@ -134,6 +135,15 @@ const Lectures = () => {
             await deleteLecture(lectureToDelete.id);
             setLectureToDelete(null);
         }
+    };
+
+    const handleEditClick = (lecture: Lecture) => {
+        navigate(ROUTES.LECTURES_EDIT.replace(":lectureId", lecture.id.toString()), {
+            state: {
+                lecture,
+                from: location.pathname + location.search
+            }
+        });
     };
 
     const isLoading = isFetching || !hasLoaded || isSubjectsLoading || (!!batchId && isBatchesLoading);
@@ -243,7 +253,7 @@ const Lectures = () => {
                                     key={l.id}
                                     lecture={l}
                                     onDelete={handleDeleteClick}
-                                // onEdit={() => handleEditClick(l)}  // add this later if edit is implemented
+                                    onEdit={handleEditClick}
                                 />
                             ))}
                         </div>

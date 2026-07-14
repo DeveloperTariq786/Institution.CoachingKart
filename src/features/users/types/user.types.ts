@@ -20,13 +20,16 @@ export interface InstitutionStudent {
     id: string;
     userId: string;
     batchId: string;
-    status: 'ACTIVE' | 'INACTIVE' | 'COMPLETED';
+    status?: 'ACTIVE' | 'INACTIVE' | 'COMPLETED';
+    isActive: boolean;
+    isApproved?: boolean;
     joinedAt: string;
     completedAt: string | null;
-    feePaid: number;
-    discount: number;
+    feePaid: number | null;
+    discount: number | null;
     createdAt: string;
     updatedAt: string;
+    expiresAt?: string | null;
     user: {
         id: string;
         name: string;
@@ -70,9 +73,28 @@ export interface CreateStudentPayload {
     batchId: string;
     feePaid: number;
     discount: number;
+    expiresAt?: string | null;
+}
+
+export interface UpdateStudentEnrollmentPayload {
+    name?: string;
+    email?: string;
+    phone?: string;
+    batchId?: string;
+    feePaid?: number;
+    discount?: number;
+    status?: 'ACTIVE' | 'INACTIVE' | 'COMPLETED';
+    isActive?: boolean;
+    expiresAt?: string | null;
+}
+
+export interface ApproveEnrollmentPayload {
+    isApproved: boolean;
+    expiresAt?: string;
 }
 
 export interface PaginatedResponse<T> {
     success: boolean;
     data: T[];
 }
+

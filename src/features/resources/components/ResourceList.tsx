@@ -1,25 +1,45 @@
 import { Button } from "@/components/ui/button";
-import { Plus, FileText, Download, ExternalLink, Type, Link2 } from "lucide-react";
-import { useEffect } from "react";
+import { Plus, FileText, Download, ExternalLink, Type, Link2, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useResources } from "../hooks/useResources";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Resource } from "../types";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/paths";
+import { DeleteConfirmDialog } from "@/components/common/DeleteConfirmDialog";
 
 interface ResourceListProps {
     lectureId: string;
 }
 
 export const ResourceList = ({ lectureId }: ResourceListProps) => {
-    const { resources, isLoading, fetchResources, lastLectureId } = useResources();
+    const { resources, isLoading, fetchResources, lastLectureId, deleteResource } = useResources();
     const navigate = useNavigate();
+    
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [resourceToDelete, setResourceToDelete] = useState<Resource | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         if (lectureId) {
             fetchResources(lectureId);
         }
     }, [lectureId, fetchResources]);
+
+    const handleDeleteClick = (resource: Resource) => {
+        setResourceToDelete(resource);
+        setDeleteDialogOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (resourceToDelete) {
+            setIsDeleting(true);
+            await deleteResource(resourceToDelete.id);
+            setIsDeleting(false);
+            setResourceToDelete(null);
+            setDeleteDialogOpen(false);
+        }
+    };
 
     // Check if the current resources belong to the requested lecture
     const isChangingLecture = lastLectureId !== lectureId;
@@ -132,12 +152,29 @@ export const ResourceList = ({ lectureId }: ResourceListProps) => {
                                             {resource.fileUrl ? <Download className="w-4 h-4" /> : <ExternalLink className="w-4 h-4" />}
                                         </Button>
                                     )}
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-9 w-9 text-destructive hover:bg-destructive/10"
+                                        onClick={() => handleDeleteClick(resource)}
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </Button>
                                 </div>
                             </div>
                         );
                     })
                 )}
             </div>
+
+            <DeleteConfirmDialog
+                open={deleteDialogOpen}
+                onOpenChange={setDeleteDialogOpen}
+                onConfirm={handleConfirmDelete}
+                title="Delete Resource"
+                itemName={resourceToDelete ? (getResourceInfo(resourceToDelete) as any).title : ""}
+                isLoading={isDeleting}
+            />
         </div>
     );
 };

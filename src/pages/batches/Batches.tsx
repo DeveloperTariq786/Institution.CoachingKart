@@ -34,6 +34,7 @@ const Batches = () => {
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [batchToDelete, setBatchToDelete] = useState<Batch | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const institutionId = profile?.id;
@@ -68,8 +69,13 @@ const Batches = () => {
 
   const handleConfirmDelete = async () => {
     if (batchToDelete) {
-      await deleteBatch(batchToDelete.id);
-      setBatchToDelete(null);
+      setIsDeleting(true);
+      const success = await deleteBatch(batchToDelete.id);
+      setIsDeleting(false);
+      if (success) {
+        setDeleteDialogOpen(false);
+        setBatchToDelete(null);
+      }
     }
   };
 
@@ -78,7 +84,7 @@ const Batches = () => {
       header: "Name",
       className: "w-[300px] max-w-[300px] overflow-hidden",
       cell: (batch) => (
-        <BatchRowInfo name={batch.name} />
+        <BatchRowInfo name={batch.name} thumbnail={batch.thumbnail} />
       ),
     },
     {
@@ -191,8 +197,10 @@ const Batches = () => {
       className: "text-right w-[120px]",
       cell: (batch) => (
         <div className="flex justify-end gap-1.5 text-right">
-          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100">
-            <Pencil className="h-4 w-4 text-slate-500" />
+          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100" asChild>
+            <Link to={`/dashboard/batches/edit/${batch.id}`}>
+              <Pencil className="h-4 w-4 text-slate-500" />
+            </Link>
           </Button>
           <Button
             variant="ghost"
@@ -301,6 +309,7 @@ const Batches = () => {
         onConfirm={handleConfirmDelete}
         title="Delete Batch"
         itemName={batchToDelete?.name}
+        isLoading={isDeleting}
       />
     </DashboardLayout>
   );

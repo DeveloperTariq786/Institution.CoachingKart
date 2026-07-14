@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { centerService } from "../services/centerService";
-import { Center, CreateCenterRequest } from "../types/center";
+import { Center, CreateCenterRequest, UpdateCenterRequest } from "../types/center";
 import { useToast } from "@/hooks/use-toast";
 
 export const useCenters = () => {
@@ -53,6 +53,51 @@ export const useCenters = () => {
         }
     };
 
+    const updateCenter = async (centerId: string, data: UpdateCenterRequest) => {
+        setIsProcessing(true);
+        try {
+            await centerService.updateCenter(centerId, data);
+            toast({
+                title: "Success",
+                description: "Center updated successfully",
+            });
+            return true;
+        } catch (err: any) {
+            const message = err.response?.data?.message || "Failed to update center";
+            toast({
+                title: "Error",
+                description: message,
+                variant: "destructive",
+            });
+            return false;
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    const deleteCenter = async (id: string) => {
+        setIsProcessing(true);
+        try {
+            await centerService.deleteCenter(id);
+            setCenters((prev) => prev.filter((c) => c.id !== id));
+            toast({
+                title: "Success",
+                description: "Center deleted successfully",
+            });
+            return true;
+        } catch (err: any) {
+            const message = err.response?.data?.message || "Failed to delete center";
+            toast({
+                title: "Error",
+                description: message,
+                variant: "destructive",
+            });
+            return false;
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
     return {
         centers,
         isLoading,
@@ -61,5 +106,7 @@ export const useCenters = () => {
         error,
         fetchCenters,
         createCenter,
+        updateCenter,
+        deleteCenter,
     };
 };

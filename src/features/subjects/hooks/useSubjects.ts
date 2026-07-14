@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSubjectStore } from "../store/subject.store";
 
 export const useSubjects = () => {
-    const { subjects, pagination, hasLoaded, lastLoadedPage, setSubjects, removeSubject } = useSubjectStore();
+    const { subjects, pagination, hasLoaded, lastLoadedPage, setSubjects, removeSubject, updateSubject: updateStoreSubject, clearSubjects } = useSubjectStore();
     const [isFetching, setIsFetching] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -39,6 +39,7 @@ export const useSubjects = () => {
         setIsProcessing(true);
         try {
             await subjectService.createSubject(data);
+            clearSubjects();
             toast({
                 title: "Success",
                 description: "Subject created successfully",
@@ -46,6 +47,29 @@ export const useSubjects = () => {
             return true;
         } catch (err: any) {
             const message = err.response?.data?.message || err.message || "Failed to create subject";
+            toast({
+                title: "Error",
+                description: message,
+                variant: "destructive",
+            });
+            return false;
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    const updateSubject = async (id: string, data: Partial<CreateSubjectRequest>) => {
+        setIsProcessing(true);
+        try {
+            await subjectService.updateSubject(id, data);
+            clearSubjects();
+            toast({
+                title: "Success",
+                description: "Subject updated successfully",
+            });
+            return true;
+        } catch (err: any) {
+            const message = err.response?.data?.message || err.message || "Failed to update subject";
             toast({
                 title: "Error",
                 description: message,
@@ -90,6 +114,7 @@ export const useSubjects = () => {
         pagination,
         fetchSubjects,
         createSubject,
+        updateSubject,
         deleteSubject,
     };
 };

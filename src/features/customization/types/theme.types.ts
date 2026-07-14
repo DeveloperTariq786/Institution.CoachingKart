@@ -1,11 +1,25 @@
 
 export interface InstitutionTheme {
     primary: string;
-    secondary: string;
     background: string;
     foreground: string;
-    accent: string;
 }
+
+export interface InstitutionThemeResponse extends InstitutionTheme {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface ColorPalette extends InstitutionTheme {
+    id: string;
+    name: string;
+}
+
+export const PREDEFINED_PALETTES: ColorPalette[] = [
+   
+];
 
 export interface InstitutionThemeResponse extends InstitutionTheme {
     id: string;

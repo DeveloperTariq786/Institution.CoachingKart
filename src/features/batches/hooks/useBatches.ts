@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useBatchStore } from "../store/batch.store";
 
 export const useBatches = () => {
-    const { batches, pagination, hasLoaded, setBatches, deleteBatch: removeBatch } = useBatchStore();
+    const { batches, pagination, hasLoaded, setBatches, deleteBatch: removeBatch, clearBatches } = useBatchStore();
     const [isFetching, setIsFetching] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -49,6 +49,7 @@ export const useBatches = () => {
         setIsProcessing(true);
         try {
             await batchService.createBatch(data);
+            clearBatches();
             toast({
                 title: "Success",
                 description: "Batch created successfully",
@@ -67,7 +68,30 @@ export const useBatches = () => {
         }
     };
 
-    const deleteBatch = async (id: string, programId?: string) => {
+    const updateBatch = async (id: string, data: Partial<CreateBatchRequest>) => {
+        setIsProcessing(true);
+        try {
+            await batchService.updateBatch(id, data);
+            clearBatches();
+            toast({
+                title: "Success",
+                description: "Batch updated successfully",
+            });
+            return true;
+        } catch (err: any) {
+            const message = err.response?.data?.message || "Failed to update batch";
+            toast({
+                title: "Error",
+                description: message,
+                variant: "destructive",
+            });
+            return false;
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    const deleteBatch = async (id: string) => {
         setIsProcessing(true);
         try {
             await batchService.deleteBatch(id);
@@ -100,6 +124,7 @@ export const useBatches = () => {
         pagination,
         fetchBatches,
         createBatch,
+        updateBatch,
         deleteBatch,
     };
 };

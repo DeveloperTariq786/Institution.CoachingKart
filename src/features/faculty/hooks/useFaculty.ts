@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { facultyService } from "../services/facultyService";
-import { Faculty, CreateFacultyRequest } from "../types/faculty";
+import { Faculty, CreateFacultyRequest, UpdateFacultyRequest } from "../types/faculty";
 import { useToast } from "@/hooks/use-toast";
 
 export const useFaculty = () => {
@@ -53,6 +53,28 @@ export const useFaculty = () => {
         }
     };
 
+    const updateFaculty = async (facultyId: string, data: UpdateFacultyRequest) => {
+        setIsProcessing(true);
+        try {
+            await facultyService.updateFaculty(facultyId, data);
+            toast({
+                title: "Success",
+                description: "Faculty updated successfully",
+            });
+            return true;
+        } catch (err: any) {
+            const message = err.response?.data?.message || err.message || "Failed to update faculty";
+            toast({
+                title: "Error",
+                description: message,
+                variant: "destructive",
+            });
+            return false;
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
     const deleteFaculty = async (id: string) => {
         setIsProcessing(true);
         try {
@@ -85,6 +107,7 @@ export const useFaculty = () => {
         error,
         fetchFaculty,
         createFaculty,
+        updateFaculty,
         deleteFaculty,
     };
 };

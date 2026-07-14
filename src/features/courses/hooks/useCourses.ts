@@ -52,6 +52,28 @@ export const useCourses = () => {
         }
     };
 
+    const updateCourse = async (id: string, data: Partial<CreateCourseRequest>) => {
+        setIsLoading(true);
+        try {
+            await courseService.updateCourse(id, data);
+            toast({
+                title: "Success",
+                description: "Course updated successfully",
+            });
+            return true;
+        } catch (err: any) {
+            const message = err.response?.data?.message || "Failed to update course";
+            toast({
+                title: "Error",
+                description: message,
+                variant: "destructive",
+            });
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const deleteCourse = async (id: string) => {
         try {
             await courseService.deleteCourse(id);
@@ -79,6 +101,7 @@ export const useCourses = () => {
         error,
         fetchCourses,
         createCourse,
+        updateCourse,
         deleteCourse,
     };
 };

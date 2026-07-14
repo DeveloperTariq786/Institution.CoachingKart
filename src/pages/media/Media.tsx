@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/paths";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Images, LayoutTemplate, Save, FileText, Plus } from "lucide-react";
@@ -13,14 +13,21 @@ import About from "@/features/media/components/About";
 import { useGallery } from "@/features/media/hooks/useGallery";
 import { useBanner } from "@/features/media/hooks/useBanner";
 import { useAbout } from "@/features/media/hooks/useAbout";
-import { UpdateAboutRequest } from "@/features/media/types";
+import { UpdateAboutRequest, GalleryImage, BannerImage } from "@/features/media/types";
+import { DeleteConfirmDialog } from "@/components/common/DeleteConfirmDialog";
 
 const Media = () => {
     const { collapsed } = useSidebarState();
     const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     // Tab state - initialized from URL or default to gallery
     const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "gallery");
+
+    // Delete dialog states
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [imageToDelete, setImageToDelete] = useState<GalleryImage | null>(null);
+    const [bannerToDelete, setBannerToDelete] = useState<BannerImage | null>(null);
 
     // Sync state with URL if it changes externally
     useEffect(() => {
@@ -36,10 +43,10 @@ const Media = () => {
     };
 
     // Gallery Section State
-    const { gallery, isLoading: isGalleryLoading, deleteGalleryItem } = useGallery();
+    const { gallery, isLoading: isGalleryLoading, deleteGalleryItem, isDeleting: isGalleryDeleting } = useGallery();
 
     // Banner Section State
-    const { banners, isLoading: isBannerLoading, deleteBannerItem } = useBanner();
+    const { banners, isLoading: isBannerLoading, deleteBannerItem, isDeleting: isBannerDeleting } = useBanner();
 
     // About Section State
     const { about, isLoading: isAboutLoading, updateAbout, isUpdating } = useAbout();
@@ -81,21 +88,48 @@ const Media = () => {
     };
 
     // Gallery handlers
-    const removeGalleryImage = async (id: string) => {
-        await deleteGalleryItem(id);
+    const handleEditImage = (image: GalleryImage) => {
+        navigate(ROUTES.MEDIA_GALLERY_EDIT.replace(":galleryId", image.id), { state: { galleryItem: image } });
+    };
+
+    const handleDeleteClick = (image: GalleryImage) => {
+        setImageToDelete(image);
+        setDeleteDialogOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (imageToDelete) {
+            try {
+                await deleteGalleryItem(imageToDelete.id);
+                setDeleteDialogOpen(false);
+                setImageToDelete(null);
+            } catch {
+                // Error handled by hook
+            }
+        } else if (bannerToDelete) {
+            try {
+                await deleteBannerItem(bannerToDelete.id);
+                setDeleteDialogOpen(false);
+                setBannerToDelete(null);
+            } catch {
+                // Error handled by hook
+            }
+        }
     };
 
     // Banner handlers
-    const removeBanner = async (id: string) => {
-        await deleteBannerItem(id);
+    const handleEditBanner = (banner: BannerImage) => {
+        navigate(ROUTES.MEDIA_BANNER_EDIT.replace(":bannerId", banner.id), { state: { bannerItem: banner } });
+    };
+
+    const handleDeleteBannerClick = (banner: BannerImage) => {
+        setBannerToDelete(banner);
+        setDeleteDialogOpen(true);
     };
 
     return (
         <DashboardLayout>
-            <div className={cn(
-                "space-y-6 mx-auto transition-all duration-300",
-                collapsed ? "max-w-6xl" : "max-w-5xl"
-            )}>
+            <div className={cn("space-y-6", "transition-all duration-300")}>
                 <div className="flex flex-col gap-1">
                     <h1 className="text-2xl font-bold tracking-tight">Media Management</h1>
                     <p className="text-muted-foreground">Manage your institution's gallery, banner images, and about information.</p>
@@ -116,7 +150,6 @@ const Media = () => {
                             <span>About</span>
                         </TabsTrigger>
                     </TabsList>
-
                     <TabsContent value="gallery" className="space-y-6">
                         <div className="flex items-center justify-end">
                             <Button asChild className="h-9">
@@ -128,7 +161,8 @@ const Media = () => {
                         </div>
                         <MediaGallery
                             gallery={gallery}
-                            onRemove={removeGalleryImage}
+                            onEdit={handleEditImage}
+                            onRemove={handleDeleteClick}
                             isLoading={isGalleryLoading}
                         />
                     </TabsContent>
@@ -144,7 +178,8 @@ const Media = () => {
                         </div>
                         <MediaBanners
                             banners={banners}
-                            onRemove={removeBanner}
+                            onEdit={handleEditBanner}
+                            onRemove={handleDeleteBannerClick}
                             isLoading={isBannerLoading}
                         />
                     </TabsContent>
@@ -183,6 +218,27 @@ const Media = () => {
                     </div>
                 )}
             </div>
+
+            <DeleteConfirmDialog
+                open={deleteDialogOpen}
+                onOpenChange={(open) => {
+                    setDeleteDialogOpen(open);
+                    if (!open) {
+                        setImageToDelete(null);
+                        setBannerToDelete(null);
+                    }
+                }}
+                onConfirm={handleConfirmDelete}
+                title={bannerToDelete ? "Delete Banner" : "Delete Gallery Image"}
+                itemName={
+                    imageToDelete
+                        ? `Image under category "${imageToDelete.tag}"`
+                        : bannerToDelete
+                            ? `Banner "${bannerToDelete.heading}"`
+                            : undefined
+                }
+                isLoading={isGalleryDeleting || isBannerDeleting}
+            />
         </DashboardLayout>
     );
 };

@@ -23,6 +23,7 @@ const Subjects = () => {
 
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [subjectToDelete, setSubjectToDelete] = useState<Subject | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
@@ -36,7 +37,10 @@ const Subjects = () => {
 
     const handleConfirmDelete = async () => {
         if (subjectToDelete) {
+            setIsDeleting(true);
             await deleteSubject(subjectToDelete.id);
+            setIsDeleting(false);
+            setDeleteDialogOpen(false);
             setSubjectToDelete(null);
         }
     };
@@ -55,9 +59,11 @@ const Subjects = () => {
             className: "text-right w-[150px]",
             cell: (subject) => (
                 <div className="flex justify-end gap-2 text-right">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100">
-                        <Pencil className="h-4 w-4 text-slate-500" />
-                    </Button>
+                    <Link to={ROUTES.SUBJECTS_EDIT.replace(":subjectId", subject.id)}>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100">
+                            <Pencil className="h-4 w-4 text-slate-500" />
+                        </Button>
+                    </Link>
                     <Button
                         variant="ghost"
                         size="icon"
@@ -142,6 +148,7 @@ const Subjects = () => {
                 onConfirm={handleConfirmDelete}
                 title="Delete Subject"
                 itemName={subjectToDelete?.name}
+                isLoading={isDeleting}
             />
         </DashboardLayout>
     );

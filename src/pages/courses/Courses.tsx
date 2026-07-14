@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Pencil, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { ROUTES } from "@/core/routes/paths";
@@ -22,6 +22,7 @@ const Courses = () => {
   const { courses, pagination, isLoading, fetchCourses, deleteCourse } = useCourses();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<Course | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -35,7 +36,10 @@ const Courses = () => {
 
   const handleConfirmDelete = async () => {
     if (courseToDelete) {
+      setIsDeleting(true);
       await deleteCourse(courseToDelete.id);
+      setIsDeleting(false);
+      setDeleteDialogOpen(false);
       setCourseToDelete(null);
     }
   };
@@ -65,9 +69,11 @@ const Courses = () => {
       className: "text-right w-[150px]",
       cell: (course) => (
         <div className="flex justify-end gap-2 text-right">
-          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100">
-            <Pencil className="h-4 w-4 text-slate-500" />
-          </Button>
+          <Link to={ROUTES.COURSES_EDIT.replace(":courseId", course.id)}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100">
+              <Pencil className="h-4 w-4 text-slate-500" />
+            </Button>
+          </Link>
           <Button
             variant="ghost"
             size="icon"
@@ -152,6 +158,7 @@ const Courses = () => {
         onConfirm={handleConfirmDelete}
         title="Delete Course"
         itemName={courseToDelete?.name}
+        isLoading={isDeleting}
       />
     </DashboardLayout>
   );

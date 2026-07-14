@@ -15,6 +15,7 @@ interface ProgramState {
 interface ProgramActions {
     setPrograms: (programs: Program[], pagination: Pagination | null, filters: ProgramState['lastFilters']) => void;
     addProgram: (program: Program) => void;
+    updateProgram: (id: string, updatedProgram: Partial<Program>) => void;
     removeProgram: (id: string) => void;
     clearPrograms: () => void;
 }
@@ -34,6 +35,10 @@ export const useProgramStore = create<ProgramState & ProgramActions>((set) => ({
 
     addProgram: (program) => set((state) => ({
         programs: [program, ...state.programs]
+    })),
+
+    updateProgram: (id, updatedProgram) => set((state) => ({
+        programs: state.programs.map((p) => p.id === id ? { ...p, ...updatedProgram } : p)
     })),
 
     removeProgram: (id) => set((state) => ({

@@ -25,14 +25,42 @@ export const batchService = {
     },
 
     createBatch: async (data: CreateBatchRequest): Promise<void> => {
-        await apiClient.post(INSTITUTION_ENDPOINTS.BATCHES, data);
+        const formData = new FormData();
+        formData.append("session", data.session);
+        formData.append("name", data.name);
+        formData.append("description", data.description);
+        formData.append("academicFee", data.academicFee);
+        formData.append("programId", data.programId);
+        formData.append("subjectIds", JSON.stringify(data.subjectIds));
+        if (data.thumbnail) {
+            formData.append("thumbnail", data.thumbnail);
+        }
+
+        await apiClient.post(INSTITUTION_ENDPOINTS.BATCHES, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     },
 
     updateBatch: async (id: string, data: Partial<CreateBatchRequest>): Promise<void> => {
-        await apiClient.patch(`${INSTITUTION_ENDPOINTS.BATCHES}/${id}`, data);
+        const formData = new FormData();
+        if (data.name) formData.append("name", data.name);
+        if (data.description) formData.append("description", data.description);
+        if (data.academicFee) formData.append("academicFee", data.academicFee);
+        if (data.subjectIds) formData.append("subjectIds", JSON.stringify(data.subjectIds));
+        if (data.thumbnail) {
+            formData.append("thumbnail", data.thumbnail);
+        }
+
+        await apiClient.patch(`${INSTITUTION_ENDPOINTS.BATCHES}?batchId=${id}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     },
 
     deleteBatch: async (id: string): Promise<void> => {
-        await apiClient.delete(`${INSTITUTION_ENDPOINTS.BATCHES}/${id}`);
+        await apiClient.delete(`${INSTITUTION_ENDPOINTS.BATCHES}?batchId=${id}`);
     },
 };

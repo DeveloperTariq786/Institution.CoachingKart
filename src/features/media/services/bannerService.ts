@@ -1,6 +1,6 @@
 import { apiClient } from "@/core/api";
 import { INSTITUTION_ENDPOINTS } from "@/core/api/endpoint/endpoints";
-import { BannerImage, BannerResponse, CreateBannerRequest } from "../types";
+import { BannerImage, BannerResponse, CreateBannerRequest, UpdateBannerRequest } from "../types";
 
 export const bannerService = {
     getBanners: async (): Promise<BannerImage[]> => {
@@ -36,7 +36,27 @@ export const bannerService = {
         });
     },
 
-    deleteBannerItem: async (id: string): Promise<void> => {
-        await apiClient.delete(`${INSTITUTION_ENDPOINTS.BANNER}/${id}`);
+    updateBannerItem: async (bannerId: string, data: UpdateBannerRequest): Promise<void> => {
+        const formData = new FormData();
+        if (data.heading) formData.append("heading", data.heading);
+        if (data.description) formData.append("description", data.description);
+        if (data.image) formData.append("image", data.image);
+
+        await apiClient.patch(INSTITUTION_ENDPOINTS.BANNER_UPDATE, formData, {
+            params: {
+                bannerId,
+            },
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+    },
+
+    deleteBannerItem: async (bannerId: string): Promise<void> => {
+        await apiClient.delete(INSTITUTION_ENDPOINTS.BANNER_DELETE, {
+            params: {
+                bannerId,
+            },
+        });
     },
 };

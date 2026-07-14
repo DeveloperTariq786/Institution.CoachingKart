@@ -37,3 +37,12 @@ export interface FacultyResponse {
     data: Faculty[];
     message?: string;
 }
+
+export interface UpdateFacultyRequest {
+    name?: string;
+    experience?: number;
+    tag?: string;
+    description?: string;
+    subjectId?: string;
+}
+

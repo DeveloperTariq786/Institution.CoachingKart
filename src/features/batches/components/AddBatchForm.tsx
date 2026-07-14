@@ -5,7 +5,7 @@ import { useBatches } from "@/features/batches/hooks/useBatches";
 import { usePrograms } from "@/features/programs/hooks/usePrograms";
 import { useCourses } from "@/features/courses/hooks/useCourses";
 import { useSubjects } from "@/features/subjects/hooks/useSubjects";
-import { BookOpen, GraduationCap, School, Users, IndianRupee, Notebook, Check } from "lucide-react";
+import { BookOpen, GraduationCap, School, Users, IndianRupee, Notebook, Check, Image } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
@@ -25,6 +25,7 @@ export const AddBatchForm = () => {
         courseId: "", // Helper for filtering programs
         programId: "",
         subjectIds: [] as string[],
+        thumbnail: null as File | null,
     });
 
     useEffect(() => {
@@ -42,14 +43,15 @@ export const AddBatchForm = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const { session, name, description, academicFee, programId, subjectIds } = formData;
+        const { session, name, description, academicFee, programId, subjectIds, thumbnail } = formData;
         const success = await createBatch({
             session,
             name,
             description,
             academicFee: academicFee.toString(),
             programId,
-            subjectIds
+            subjectIds,
+            thumbnail
         });
         if (success) {
             navigate(ROUTES.BATCHES);
@@ -132,6 +134,18 @@ export const AddBatchForm = () => {
             componentType: "select",
             options: programs.map(p => p.name),
             icon: BookOpen,
+        },
+        {
+            id: "thumbnail",
+            label: "Batch Thumbnail",
+            placeholder: "Upload thumbnail image",
+            value: formData.thumbnail,
+            onChange: (file) => setFormData({ ...formData, thumbnail: file }),
+            required: false,
+            componentType: "file",
+            accept: "image/*",
+            icon: Image,
+            colSpan: 2,
         },
         {
             id: "description",

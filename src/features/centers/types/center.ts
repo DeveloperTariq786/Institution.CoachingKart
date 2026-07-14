@@ -38,6 +38,21 @@ export interface CreateCenterRequest {
     };
 }
 
+export interface UpdateCenterRequest {
+    name?: string;
+    image?: File | null;
+    phone?: string;
+    location?: {
+        address?: string;
+        city?: string;
+        state?: string;
+        country?: string;
+        postalCode?: string;
+        latitude?: number;
+        longitude?: number;
+    };
+}
+
 export interface CenterResponse {
     success: boolean;
     data: Center[];

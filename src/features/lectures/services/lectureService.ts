@@ -31,7 +31,23 @@ export const lectureService = {
         });
     },
 
+    updateLecture: async (id: string, data: { title: string; description: string; facultyId: string; thumbnail?: File | null }): Promise<void> => {
+        const formData = new FormData();
+        formData.append("title", data.title);
+        formData.append("description", data.description);
+        formData.append("facultyId", data.facultyId);
+        if (data.thumbnail) {
+            formData.append("thumbnail", data.thumbnail);
+        }
+
+        await apiClient.patch(`${INSTITUTION_ENDPOINTS.LECTURES}?lectureId=${id}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+    },
+
     deleteLecture: async (id: string): Promise<void> => {
-        await apiClient.delete(`${INSTITUTION_ENDPOINTS.LECTURES}/${id}`);
+        await apiClient.delete(`${INSTITUTION_ENDPOINTS.LECTURES}?lectureId=${id}`);
     },
 };

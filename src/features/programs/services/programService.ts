@@ -24,10 +24,10 @@ export const programService = {
     },
 
     updateProgram: async (id: string, data: Partial<CreateProgramRequest>): Promise<void> => {
-        await apiClient.patch(`${INSTITUTION_ENDPOINTS.PROGRAMS}/${id}`, data);
+        await apiClient.patch(`${INSTITUTION_ENDPOINTS.PROGRAMS}?programId=${id}`, data);
     },
 
     deleteProgram: async (id: string): Promise<void> => {
-        await apiClient.delete(`${INSTITUTION_ENDPOINTS.PROGRAMS}/${id}`);
+        await apiClient.delete(`${INSTITUTION_ENDPOINTS.PROGRAMS}?programId=${id}`);
     },
 };

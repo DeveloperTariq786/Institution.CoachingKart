@@ -8,7 +8,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 interface DeleteConfirmDialogProps {
     open: boolean;
@@ -19,6 +19,7 @@ interface DeleteConfirmDialogProps {
     confirmLabel?: string;
     cancelLabel?: string;
     itemName?: string;
+    isLoading?: boolean;
 }
 
 export const DeleteConfirmDialog = ({
@@ -30,34 +31,46 @@ export const DeleteConfirmDialog = ({
     confirmLabel = "Delete",
     cancelLabel = "Cancel",
     itemName,
+    isLoading = false,
 }: DeleteConfirmDialogProps) => {
     return (
-        <AlertDialog open={open} onOpenChange={onOpenChange}>
+        <AlertDialog open={open} onOpenChange={isLoading ? undefined : onOpenChange}>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{title}</AlertDialogTitle>
                     <AlertDialogDescription>
                         {description || (
                             <>
-                                Are you sure you want to delete {itemName ? <strong>{itemName}</strong> : "this item"}?
-                                This action cannot be undone.
+                                Are you sure you want to delete{" "}
+                                {itemName ? <strong>{itemName}</strong> : "this item"}?
+                                {" "}This action cannot be undone.
                             </>
                         )}
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                    <AlertDialogCancel onClick={() => onOpenChange(false)}>
+                    <AlertDialogCancel
+                        onClick={() => onOpenChange(false)}
+                        disabled={isLoading}
+                    >
                         {cancelLabel}
                     </AlertDialogCancel>
                     <AlertDialogAction
                         onClick={(e) => {
                             e.preventDefault();
                             onConfirm();
-                            onOpenChange(false);
                         }}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        disabled={isLoading}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90 min-w-[90px]"
                     >
-                        {confirmLabel}
+                        {isLoading ? (
+                            <span className="flex items-center gap-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                Deleting...
+                            </span>
+                        ) : (
+                            confirmLabel
+                        )}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

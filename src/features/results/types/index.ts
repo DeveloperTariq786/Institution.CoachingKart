@@ -29,3 +29,13 @@ export interface BulkResultRequest {
     profiles: File[];
 }
 
+export interface UpdateResultRequest {
+    name?: string;
+    rank?: string;
+    score?: string;
+    session?: string;
+    courseId?: string;
+    enrollmentId?: string;
+    profile?: File | null;
+}
+

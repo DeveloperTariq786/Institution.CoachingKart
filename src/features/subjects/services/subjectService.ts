@@ -16,10 +16,10 @@ export const subjectService = {
     },
 
     updateSubject: async (id: string, data: Partial<CreateSubjectRequest>): Promise<void> => {
-        await apiClient.patch(`${INSTITUTION_ENDPOINTS.SUBJECTS}/${id}`, data);
+        await apiClient.patch(`${INSTITUTION_ENDPOINTS.SUBJECTS}?subjectId=${id}`, data);
     },
 
     deleteSubject: async (id: string): Promise<void> => {
-        await apiClient.delete(`${INSTITUTION_ENDPOINTS.SUBJECTS}/${id}`);
+        await apiClient.delete(`${INSTITUTION_ENDPOINTS.SUBJECTS}?subjectId=${id}`);
     },
 };
