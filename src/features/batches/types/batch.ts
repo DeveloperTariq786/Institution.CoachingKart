@@ -7,6 +7,7 @@ export interface Batch {
     programId: string;
     createdAt: string;
     updatedAt: string;
+    thumbnail?: string;
     program?: {
         name: string;
         courseId?: string;
@@ -44,6 +45,7 @@ export interface CreateBatchRequest {
     academicFee: string;
     programId: string;
     subjectIds: string[];
+    thumbnail?: File | string | null;
 }
 
 export interface BatchResponse {

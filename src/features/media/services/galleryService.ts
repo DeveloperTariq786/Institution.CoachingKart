@@ -1,6 +1,6 @@
 import { apiClient } from "@/core/api";
 import { INSTITUTION_ENDPOINTS } from "@/core/api/endpoint/endpoints";
-import { GalleryImage, GalleryResponse, CreateGalleryRequest } from "../types";
+import { GalleryImage, GalleryResponse, CreateGalleryRequest, UpdateGalleryRequest } from "../types";
 
 export const galleryService = {
     getGallery: async (): Promise<GalleryImage[]> => {
@@ -32,7 +32,26 @@ export const galleryService = {
         });
     },
 
-    deleteGalleryItem: async (id: string): Promise<void> => {
-        await apiClient.delete(`${INSTITUTION_ENDPOINTS.GALLERY}/${id}`);
+    updateGalleryItem: async (galleryId: string, data: UpdateGalleryRequest): Promise<void> => {
+        const formData = new FormData();
+        if (data.tag) formData.append("tag", data.tag);
+        if (data.image) formData.append("image", data.image);
+
+        await apiClient.patch(INSTITUTION_ENDPOINTS.GALLERY_UPDATE, formData, {
+            params: {
+                galleryId,
+            },
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+    },
+
+    deleteGalleryItem: async (galleryId: string): Promise<void> => {
+        await apiClient.delete(INSTITUTION_ENDPOINTS.GALLERY_DELETE, {
+            params: {
+                galleryId,
+            },
+        });
     },
 };

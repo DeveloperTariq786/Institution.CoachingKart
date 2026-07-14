@@ -37,4 +37,8 @@ export const resourceService = {
             },
         });
     },
+
+    deleteResource: async (id: string): Promise<void> => {
+        await apiClient.delete(`${INSTITUTION_ENDPOINTS.RESOURCES}?resourceId=${id}`);
+    },
 };

@@ -43,7 +43,7 @@ const Dashboard = () => {
         </h1>
         <p className="text-muted-foreground mt-1.5 flex items-center gap-2 font-medium">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-          Here's what's happening in your institute today.
+          Here's a quick overview of your institute's activity.
         </p>
       </div>
 

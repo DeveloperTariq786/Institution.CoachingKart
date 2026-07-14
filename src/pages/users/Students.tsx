@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/paths";
 
 const Students = () => {
-  const { students, isLoading } = useStudents();
+  const { students, isLoading, refetch } = useStudents();
   const navigate = useNavigate();
 
   return (
@@ -19,7 +19,7 @@ const Students = () => {
           <div>
             <h1 className="text-3xl font-bold text-foreground">Students</h1>
             <p className="text-muted-foreground mt-1">
-              View and manage enrolled students
+              View and manage Enrolled Students
             </p>
           </div>
           <Button onClick={() => navigate(ROUTES.STUDENTS_ADD)}>
@@ -30,7 +30,7 @@ const Students = () => {
 
         <Card>
           <CardContent className="p-0">
-            <StudentsTable students={students || []} isLoading={isLoading} />
+            <StudentsTable students={students || []} isLoading={isLoading} refetch={refetch} />
           </CardContent>
         </Card>
       </div>

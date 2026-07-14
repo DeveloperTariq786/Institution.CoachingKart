@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import CommonForm, { FormFieldConfig } from "@/components/common/CommonForm";
-import { UserPlus, User, Mail, Lock, Phone, Layers, IndianRupee, Tag as TagIcon } from "lucide-react";
+import { UserPlus, User, Mail, Lock, Phone, Layers, IndianRupee, Tag as TagIcon, Calendar } from "lucide-react";
 import { CreateStudentPayload } from "../types/user.types";
 import { useStudents } from "../hooks/useUsers";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/paths";
 import { useBatches } from "@/features/batches/hooks/useBatches";
 import { useInstitutionProfile } from "@/features/Institution/hooks/useInstitutionProfile";
+import { toast } from "sonner";
+import { validateEmail, validatePassword } from "../utils/validation";
 
 export function AddStudentForm() {
     const navigate = useNavigate();
@@ -23,6 +25,7 @@ export function AddStudentForm() {
         batchId: "",
         feePaid: 0,
         discount: 0,
+        expiresAt: "",
     });
 
     useEffect(() => {
@@ -105,12 +108,38 @@ export function AddStudentForm() {
             required: true,
             icon: TagIcon,
         },
+        {
+            id: "expiresAt",
+            label: "Expires At",
+            type: "datetime-local",
+            placeholder: "Select expiration date",
+            value: formData.expiresAt || "",
+            onChange: (val) => setFormData({ ...formData, expiresAt: val }),
+            required: false,
+            icon: Calendar,
+        },
     ];
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (!validateEmail(formData.email)) {
+            toast.error("Invalid email address format.");
+            return;
+        }
+
+        const passwordCheck = validatePassword(formData.password);
+        if (!passwordCheck.isValid) {
+            toast.error(passwordCheck.message);
+            return;
+        }
+
         try {
-            await createStudent(formData);
+            const payload = {
+                ...formData,
+                expiresAt: formData.expiresAt ? new Date(formData.expiresAt).toISOString() : null,
+            };
+            await createStudent(payload);
             navigate(ROUTES.STUDENTS);
         } catch (error) {
             // Error handling is managed by the hook

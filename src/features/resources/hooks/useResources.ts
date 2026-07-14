@@ -67,6 +67,30 @@ export const useResources = () => {
         }
     };
 
+    const deleteResource = async (id: string) => {
+        setIsLoading(true);
+        try {
+            await resourceService.deleteResource(id);
+            toast({
+                title: "Success",
+                description: "Resource deleted successfully",
+            });
+            if (lastLectureId) {
+                await fetchResources(lastLectureId, true);
+            }
+            return true;
+        } catch (err) {
+            toast({
+                title: "Error",
+                description: "Failed to delete resource",
+                variant: "destructive",
+            });
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return {
         resources,
         isLoading,
@@ -75,5 +99,6 @@ export const useResources = () => {
         lastLectureId,
         fetchResources,
         addResources,
+        deleteResource,
     };
 };

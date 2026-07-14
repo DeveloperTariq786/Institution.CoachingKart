@@ -22,7 +22,8 @@ export const ProfileDropdown = ({ userName }: ProfileDropdownProps) => {
     const navigate = useNavigate();
     const { user, role, logout } = useAuthStore();
 
-    const initials = userName || user?.name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U";
+    const nameToUse = userName || user?.name || "User";
+    const initials = nameToUse.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
 
     const handleLogout = () => {
         logout();

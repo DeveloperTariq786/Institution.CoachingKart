@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLectureStore } from "../store/lecture.store";
 
 export const useLectures = () => {
-    const { lectures, pagination, hasLoaded, lastFilters, setLectures, deleteLecture: removeLecture } = useLectureStore();
+    const { lectures, pagination, hasLoaded, lastFilters, setLectures, deleteLecture: removeLecture, clearLectures } = useLectureStore();
     const [isFetching, setIsFetching] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -53,6 +53,7 @@ export const useLectures = () => {
         setIsProcessing(true);
         try {
             await lectureService.createLecture(data);
+            clearLectures();
             toast({
                 title: "Success",
                 description: "Lecture created successfully",
@@ -60,6 +61,29 @@ export const useLectures = () => {
             return true;
         } catch (err: any) {
             const message = err.response?.data?.message || err.message || "Failed to create lecture";
+            toast({
+                title: "Error",
+                description: message,
+                variant: "destructive",
+            });
+            return false;
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    const updateLecture = async (id: string, data: { title: string; description: string; facultyId: string; thumbnail?: File | null }) => {
+        setIsProcessing(true);
+        try {
+            await lectureService.updateLecture(id, data);
+            clearLectures();
+            toast({
+                title: "Success",
+                description: "Lecture updated successfully",
+            });
+            return true;
+        } catch (err: any) {
+            const message = err.response?.data?.message || err.message || "Failed to update lecture";
             toast({
                 title: "Error",
                 description: message,
@@ -104,6 +128,7 @@ export const useLectures = () => {
         pagination,
         fetchLectures,
         createLecture,
+        updateLecture,
         deleteLecture,
     };
 };

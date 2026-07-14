@@ -1,6 +1,6 @@
 import { apiClient } from "@/core/api";
 import { INSTITUTION_ENDPOINTS } from "@/core/api/endpoint/endpoints";
-import { Faculty, FacultyResponse, CreateFacultyRequest } from "../types/faculty";
+import { Faculty, FacultyResponse, CreateFacultyRequest, UpdateFacultyRequest } from "../types/faculty";
 
 export const facultyService = {
     getFaculty: async (): Promise<Faculty[]> => {
@@ -26,7 +26,21 @@ export const facultyService = {
         });
     },
 
-    deleteFaculty: async (id: string): Promise<void> => {
-        await apiClient.delete(`${INSTITUTION_ENDPOINTS.FACULTY}/${id}`);
+    updateFaculty: async (facultyId: string, data: UpdateFacultyRequest): Promise<void> => {
+        await apiClient.patch(INSTITUTION_ENDPOINTS.FACULTY, data, {
+            params: {
+                facultyId,
+            },
+        });
+    },
+
+    deleteFaculty: async (facultyId: string): Promise<void> => {
+        await apiClient.delete(INSTITUTION_ENDPOINTS.FACULTY, {
+            params: {
+                facultyId,
+            },
+        });
     },
 };
+
+export default facultyService;

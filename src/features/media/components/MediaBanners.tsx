@@ -1,15 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { X, LayoutTemplate, Loader2 } from "lucide-react";
+import { LayoutTemplate, Loader2, Pencil, Trash2 } from "lucide-react";
 import { BannerImage } from "../types";
 
 interface MediaBannersProps {
     banners: BannerImage[];
-    onRemove: (id: string) => void;
+    onEdit: (banner: BannerImage) => void;
+    onRemove: (banner: BannerImage) => void;
     isLoading?: boolean;
 }
 
-const MediaBanners = ({ banners, onRemove, isLoading }: MediaBannersProps) => {
+const MediaBanners = ({ banners, onEdit, onRemove, isLoading }: MediaBannersProps) => {
     if (isLoading) {
         return (
             <Card>
@@ -38,7 +39,7 @@ const MediaBanners = ({ banners, onRemove, isLoading }: MediaBannersProps) => {
                         {banners.map((banner, index) => (
                             <div
                                 key={banner.id}
-                                className="relative border rounded-lg overflow-hidden bg-muted/30"
+                                className="relative border rounded-lg overflow-hidden bg-muted/30 group"
                             >
                                 <div className="relative aspect-[4/1] w-full overflow-hidden">
                                     <img
@@ -46,15 +47,28 @@ const MediaBanners = ({ banners, onRemove, isLoading }: MediaBannersProps) => {
                                         alt={banner.heading || `Banner ${index + 1}`}
                                         className="h-full w-full object-cover"
                                     />
-                                    <Button
-                                        type="button"
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={() => onRemove(banner.id)}
-                                        className="absolute top-2 right-2 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 hover:opacity-100 transition-opacity"
-                                    >
-                                        <X className="h-4 w-4" />
-                                    </Button>
+                                    <div className="absolute top-2 left-2">
+                                        <Button
+                                            type="button"
+                                            variant="secondary"
+                                            size="icon"
+                                            onClick={() => onEdit(banner)}
+                                            className="h-8 w-8 bg-white/95 hover:bg-white shadow-sm border border-slate-100 backdrop-blur-sm"
+                                        >
+                                            <Pencil className="h-3.5 w-3.5 text-slate-600" />
+                                        </Button>
+                                    </div>
+                                    <div className="absolute top-2 right-2">
+                                        <Button
+                                            type="button"
+                                            variant="destructive"
+                                            size="icon"
+                                            onClick={() => onRemove(banner)}
+                                            className="h-8 w-8 p-0 shadow-sm border border-red-100"
+                                        >
+                                            <Trash2 className="h-3.5 w-3.5" />
+                                        </Button>
+                                    </div>
                                 </div>
                                 <div className="p-4">
                                     <h3 className="font-semibold text-sm">{banner.heading}</h3>

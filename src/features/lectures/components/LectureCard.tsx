@@ -5,6 +5,7 @@ import { Lecture } from "../types/lecture";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ROUTES } from "@/core/routes/paths";
+import { resolveAssetUrl } from "@/lib/resolveAssetUrl";
 
 interface LectureCardProps {
     lecture: Lecture;
@@ -38,7 +39,7 @@ export const LectureCard = ({ lecture, onEdit, onDelete }: LectureCardProps) => 
                 <div className="relative w-full sm:w-[220px] shrink-0 rounded-lg overflow-hidden aspect-video bg-slate-900 border border-slate-100">
                     {lecture.thumbnail ? (
                         <img
-                            src={lecture.thumbnail}
+                            src={resolveAssetUrl(lecture.thumbnail)}
                             alt={lecture.title}
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
@@ -67,31 +68,31 @@ export const LectureCard = ({ lecture, onEdit, onDelete }: LectureCardProps) => 
                             )}
                         </div>
                         {/* Actions */}
-                        <div className="flex items-center space-x-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex flex-col items-center gap-1 shrink-0">
                             {onEdit && (
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-7 w-7 hover:bg-slate-100 text-slate-500"
+                                    className="h-8 w-8 hover:bg-slate-100 text-slate-500"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onEdit(lecture);
                                     }}
                                 >
-                                    <Pencil className="h-3.5 w-3.5" />
+                                    <Pencil className="h-4 w-4" />
                                 </Button>
                             )}
                             {onDelete && (
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-7 w-7 text-destructive hover:bg-destructive/10"
+                                    className="h-8 w-8 text-destructive hover:text-destructive hover:bg-destructive/10"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         onDelete(lecture);
                                     }}
                                 >
-                                    <Trash2 className="h-3.5 w-3.5" />
+                                    <Trash2 className="h-4 w-4" />
                                 </Button>
                             )}
                         </div>
@@ -103,7 +104,7 @@ export const LectureCard = ({ lecture, onEdit, onDelete }: LectureCardProps) => 
                             {lecture.faculty?.profileImage ? (
                                 <div className="w-5 h-5 rounded-full overflow-hidden shrink-0 border border-slate-200">
                                     <img
-                                        src={lecture.faculty.profileImage}
+                                        src={resolveAssetUrl(lecture.faculty.profileImage)}
                                         alt={lecture.faculty.name}
                                         className="w-full h-full object-cover"
                                     />

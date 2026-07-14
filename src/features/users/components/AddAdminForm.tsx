@@ -5,6 +5,8 @@ import { CreateAdminPayload } from "../types/user.types";
 import { useAdmins } from "../hooks/useUsers";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/paths";
+import { toast } from "sonner";
+import { validateEmail, validatePassword } from "../utils/validation";
 
 export function AddAdminForm() {
     const navigate = useNavigate();
@@ -63,6 +65,18 @@ export function AddAdminForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        
+        if (!validateEmail(formData.email)) {
+            toast.error("Invalid email address format.");
+            return;
+        }
+
+        const passwordCheck = validatePassword(formData.password);
+        if (!passwordCheck.isValid) {
+            toast.error(passwordCheck.message);
+            return;
+        }
+
         try {
             await createAdmin(formData);
             navigate(ROUTES.ADMINS);

@@ -1,15 +1,16 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { X, Images, Loader2 } from "lucide-react";
+import { Images, Loader2, Pencil, Trash2 } from "lucide-react";
 import { GalleryImage } from "../types";
 
 interface MediaGalleryProps {
     gallery: GalleryImage[];
-    onRemove: (id: string) => void;
+    onEdit: (image: GalleryImage) => void;
+    onRemove: (image: GalleryImage) => void;
     isLoading?: boolean;
 }
 
-const MediaGallery = ({ gallery, onRemove, isLoading }: MediaGalleryProps) => {
+const MediaGallery = ({ gallery, onEdit, onRemove, isLoading }: MediaGalleryProps) => {
     if (isLoading) {
         return (
             <Card>
@@ -44,15 +45,28 @@ const MediaGallery = ({ gallery, onRemove, isLoading }: MediaGalleryProps) => {
                                         className="h-full w-full object-cover"
                                     />
                                 </div>
-                                <Button
-                                    type="button"
-                                    variant="destructive"
-                                    size="sm"
-                                    onClick={() => onRemove(image.id)}
-                                    className="absolute top-2 right-2 h-7 w-7 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                                >
-                                    <X className="h-4 w-4" />
-                                </Button>
+                                <div className="absolute top-2 left-2">
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        size="icon"
+                                        onClick={() => onEdit(image)}
+                                        className="h-7 w-7 bg-white/95 hover:bg-white shadow-sm border border-slate-100 backdrop-blur-sm"
+                                    >
+                                        <Pencil className="h-3.5 w-3.5 text-slate-600" />
+                                    </Button>
+                                </div>
+                                <div className="absolute top-2 right-2">
+                                    <Button
+                                        type="button"
+                                        variant="destructive"
+                                        size="icon"
+                                        onClick={() => onRemove(image)}
+                                        className="h-7 w-7 p-0 shadow-sm border border-red-100"
+                                    >
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                    </Button>
+                                </div>
                                 <div className="mt-2 px-1">
                                     <span className="inline-block text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-full">
                                         {image.tag}

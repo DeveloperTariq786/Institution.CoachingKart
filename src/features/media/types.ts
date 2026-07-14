@@ -16,6 +16,11 @@ export interface CreateGalleryRequest {
     items: { tag: string; file: File }[];
 }
 
+export interface UpdateGalleryRequest {
+    tag?: string;
+    image?: File | null;
+}
+
 // Banner Types
 export interface BannerImage {
     id: string;
@@ -34,6 +39,12 @@ export interface BannerResponse {
 
 export interface CreateBannerRequest {
     items: { heading: string; description: string; file: File }[];
+}
+
+export interface UpdateBannerRequest {
+    heading?: string;
+    description?: string;
+    image?: File | null;
 }
 
 // About Types

@@ -1,6 +1,7 @@
 import { RecentLecture } from "../services/dashboardService";
 import { PlayCircle, Clock, Calendar } from "lucide-react";
 import { format } from "date-fns";
+import { resolveAssetUrl } from "@/lib/resolveAssetUrl";
 
 interface RecentLecturesProps {
   lectures: RecentLecture[];
@@ -71,7 +72,7 @@ const RecentLectures = ({ lectures, loading }: RecentLecturesProps) => {
               >
                 <div className="relative h-24 w-40 shrink-0 overflow-hidden rounded-md bg-muted shadow-sm">
                   <img
-                    src={lecture.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=400&h=225&auto=format&fit=crop'}
+                    src={resolveAssetUrl(lecture.thumbnail) || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=400&h=225&auto=format&fit=crop'}
                     alt={lecture.title}
                     className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
@@ -109,7 +110,7 @@ const RecentLectures = ({ lectures, loading }: RecentLecturesProps) => {
                     <div className="flex items-center justify-between pt-1 border-t border-dashed border-border/50">
                        <div className="flex items-center gap-1.5 truncate">
                           <img 
-                            src={lecture.faculty.profileImage || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=40&h=40&auto=format&fit=crop'} 
+                            src={resolveAssetUrl(lecture.faculty.profileImage) || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=40&h=40&auto=format&fit=crop'} 
                             alt={lecture.faculty.name} 
                             className="h-5 w-5 rounded-full object-cover ring-1 ring-border" 
                           />

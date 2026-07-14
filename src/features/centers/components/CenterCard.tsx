@@ -1,12 +1,15 @@
 import { Center } from "../types/center";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, Phone } from "lucide-react";
+import { MapPin, Phone, Pencil, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface CenterCardProps {
     center: Center;
+    onEdit: (center: Center) => void;
+    onDelete: (center: Center) => void;
 }
 
-export const CenterCard = ({ center }: CenterCardProps) => {
+export const CenterCard = ({ center, onEdit, onDelete }: CenterCardProps) => {
     return (
         <Card className="group overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 bg-white rounded-lg">
             <div className="relative h-32 overflow-hidden">
@@ -15,6 +18,34 @@ export const CenterCard = ({ center }: CenterCardProps) => {
                     alt={center.name}
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                 />
+                <div className="absolute top-2 left-2">
+                    <Button
+                        variant="secondary"
+                        size="icon"
+                        type="button"
+                        className="h-8 w-8 bg-white/95 hover:bg-white shadow-sm border border-slate-100 backdrop-blur-sm"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onEdit(center);
+                        }}
+                    >
+                        <Pencil className="h-3.5 w-3.5 text-slate-600" />
+                    </Button>
+                </div>
+                <div className="absolute top-2 right-2">
+                    <Button
+                        variant="secondary"
+                        size="icon"
+                        type="button"
+                        className="h-8 w-8 bg-white/95 hover:bg-white text-destructive hover:text-destructive hover:bg-destructive/10 shadow-sm border border-slate-100 backdrop-blur-sm"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete(center);
+                        }}
+                    >
+                        <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                </div>
             </div>
 
             <CardContent className="p-4 space-y-3">

@@ -16,10 +16,10 @@ export const courseService = {
     },
 
     updateCourse: async (id: string, data: Partial<CreateCourseRequest>): Promise<void> => {
-        await apiClient.patch(`${INSTITUTION_ENDPOINTS.COURSES}/${id}`, data);
+        await apiClient.patch(`${INSTITUTION_ENDPOINTS.COURSES}?courseId=${id}`, data);
     },
 
     deleteCourse: async (id: string): Promise<void> => {
-        await apiClient.delete(`${INSTITUTION_ENDPOINTS.COURSES}/${id}`);
+        await apiClient.delete(`${INSTITUTION_ENDPOINTS.COURSES}?courseId=${id}`);
     },
 };

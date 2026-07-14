@@ -1,18 +1,43 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { Button } from "@/components/ui/button";
-import { Plus, MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Plus } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/paths";
 import { useCenters } from "@/features/centers/hooks/useCenters";
 import { CenterList } from "@/features/centers/components/CenterList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { DeleteConfirmDialog } from "@/components/common/DeleteConfirmDialog";
+import { Center } from "@/features/centers/types/center";
 
 const Centers = () => {
-  const { centers, isLoading, fetchCenters } = useCenters();
+  const navigate = useNavigate();
+  const { centers, isLoading, fetchCenters, deleteCenter, isProcessing } = useCenters();
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [centerToDelete, setCenterToDelete] = useState<Center | null>(null);
 
   useEffect(() => {
     fetchCenters();
   }, [fetchCenters]);
+
+  const handleEdit = (center: Center) => {
+    navigate(ROUTES.CENTERS_EDIT.replace(":centerId", center.id), { state: { center } });
+  };
+
+  const handleDeleteClick = (center: Center) => {
+    setCenterToDelete(center);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (centerToDelete) {
+      const success = await deleteCenter(centerToDelete.id);
+      if (success) {
+        setDeleteDialogOpen(false);
+        setCenterToDelete(null);
+      }
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -35,9 +60,23 @@ const Centers = () => {
 
         {/* Content Section */}
         <div className="space-y-4">
-          <CenterList centers={centers} isLoading={isLoading} />
+          <CenterList
+            centers={centers}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelete={handleDeleteClick}
+          />
         </div>
       </div>
+
+      <DeleteConfirmDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        onConfirm={handleConfirmDelete}
+        title="Delete Center"
+        itemName={centerToDelete?.name}
+        isLoading={isProcessing}
+      />
     </DashboardLayout>
   );
 };

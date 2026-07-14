@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useProgramStore } from "../store/program.store";
 
 export const usePrograms = () => {
-    const { programs, pagination, hasLoaded, lastFilters, setPrograms, removeProgram } = useProgramStore();
+    const { programs, pagination, hasLoaded, lastFilters, setPrograms, removeProgram, updateProgram: updateStoreProgram, clearPrograms } = useProgramStore();
     const [isFetching, setIsFetching] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -44,6 +44,7 @@ export const usePrograms = () => {
         setIsProcessing(true);
         try {
             await programService.createProgram(data);
+            clearPrograms();
             toast({
                 title: "Success",
                 description: "Program created successfully",
@@ -51,6 +52,29 @@ export const usePrograms = () => {
             return true;
         } catch (err: any) {
             const message = err.response?.data?.message || "Failed to create program";
+            toast({
+                title: "Error",
+                description: message,
+                variant: "destructive",
+            });
+            return false;
+        } finally {
+            setIsProcessing(false);
+        }
+    };
+
+    const updateProgram = async (id: string, data: Partial<CreateProgramRequest>) => {
+        setIsProcessing(true);
+        try {
+            await programService.updateProgram(id, data);
+            clearPrograms();
+            toast({
+                title: "Success",
+                description: "Program updated successfully",
+            });
+            return true;
+        } catch (err: any) {
+            const message = err.response?.data?.message || "Failed to update program";
             toast({
                 title: "Error",
                 description: message,
@@ -95,6 +119,7 @@ export const usePrograms = () => {
         error,
         fetchPrograms,
         createProgram,
+        updateProgram,
         deleteProgram,
     };
 };

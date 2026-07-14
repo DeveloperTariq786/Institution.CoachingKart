@@ -11,6 +11,7 @@ interface SubjectState {
 interface SubjectActions {
     setSubjects: (subjects: Subject[], pagination: Pagination | null, page: number) => void;
     addSubject: (subject: Subject) => void;
+    updateSubject: (id: string, updatedSubject: Partial<Subject>) => void;
     removeSubject: (id: string) => void;
     clearSubjects: () => void;
 }
@@ -30,6 +31,10 @@ export const useSubjectStore = create<SubjectState & SubjectActions>((set) => ({
 
     addSubject: (subject) => set((state) => ({
         subjects: [subject, ...state.subjects]
+    })),
+
+    updateSubject: (id, updatedSubject) => set((state) => ({
+        subjects: state.subjects.map((s) => s.id === id ? { ...s, ...updatedSubject } : s)
     })),
 
     removeSubject: (id) => set((state) => ({

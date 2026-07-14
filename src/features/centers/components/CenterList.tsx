@@ -5,9 +5,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface CenterListProps {
     centers: Center[];
     isLoading: boolean;
+    onEdit: (center: Center) => void;
+    onDelete: (center: Center) => void;
 }
 
-export const CenterList = ({ centers, isLoading }: CenterListProps) => {
+export const CenterList = ({ centers, isLoading, onEdit, onDelete }: CenterListProps) => {
     if (isLoading) {
         return (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -36,7 +38,12 @@ export const CenterList = ({ centers, isLoading }: CenterListProps) => {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {centers.map((center) => (
-                <CenterCard key={center.id} center={center} />
+                <CenterCard
+                    key={center.id}
+                    center={center}
+                    onEdit={onEdit}
+                    onDelete={onDelete}
+                />
             ))}
         </div>
     );

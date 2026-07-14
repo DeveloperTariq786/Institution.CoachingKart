@@ -1,12 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, Users, BookOpen, PanelLeftClose, PanelLeft, Building2, ChevronDown, List, MapPin, GraduationCap, UserCog, Layers, Users2, ClipboardList, FileText, Palette, Images, Book } from "lucide-react";
+import { LayoutDashboard, Users, BookOpen, PanelLeftClose, PanelLeft, Building2, ChevronDown, List, MapPin, GraduationCap, UserCog, Layers, Users2, ClipboardList, FileText, Palette, Images, Book, ClipboardCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ROUTES } from "@/core/routes/paths";
-import ProfileDropdown from "@/components/profile/ProfileDropdown";
-import { useAuthStore } from "@/core/store/auth.store";
+import "./Sidebar.css";
 
 interface NavItem {
   icon: React.ElementType;
@@ -17,10 +16,10 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { icon: LayoutDashboard, label: "Dashboard", path: ROUTES.DASHBOARD },
-  { icon: Building2, label: "Institution", path: ROUTES.INSTITUTION },
+  { icon: Building2, label: "Institution Profile", path: ROUTES.INSTITUTION },
   {
     icon: BookOpen,
-    label: "Courses",
+    label: "Academics",
     path: ROUTES.COURSES,
     subItems: [
       { label: "Courses", path: ROUTES.COURSES, icon: List },
@@ -36,7 +35,9 @@ const navItems: NavItem[] = [
     subItems: [
       { label: "Admins", path: ROUTES.ADMINS, icon: UserCog },
       { label: "Students", path: ROUTES.STUDENTS, icon: GraduationCap },
+      { label: "New Registrations", path: ROUTES.NEW_REGISTRATIONS, icon: ClipboardCheck },
       { label: "Faculties", path: ROUTES.FACULTY, icon: Users2 },
+      
     ]
   },
   { icon: MapPin, label: "Centers", path: ROUTES.CENTERS },
@@ -48,14 +49,10 @@ const navItems: NavItem[] = [
 interface DashboardSidebarProps {
   collapsed: boolean;
   onToggle: () => void;
-  userName?: string;
 }
 
-const DashboardSidebar = ({ collapsed, onToggle, userName }: DashboardSidebarProps) => {
+const DashboardSidebar = ({ collapsed, onToggle }: DashboardSidebarProps) => {
   const location = useLocation();
-  const { user, role } = useAuthStore();
-  const displayName = userName || user?.name || "User";
-  const displayRole = role?.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ') || "Admin";
 
   const getActiveMenu = () => {
     const activeItem = navItems.find(
@@ -79,7 +76,7 @@ const DashboardSidebar = ({ collapsed, onToggle, userName }: DashboardSidebarPro
 
   return (
     <aside className={cn(
-      "fixed left-0 top-0 z-40 h-screen border-r bg-sidebar flex flex-col transition-all duration-300",
+      "fixed left-0 top-0 z-40 h-screen border-r bg-sidebar flex flex-col overflow-y-auto scrollbar-hide transition-all duration-300",
       collapsed ? "w-16" : "w-64"
     )}>
       {/* Logo Header */}
@@ -88,22 +85,22 @@ const DashboardSidebar = ({ collapsed, onToggle, userName }: DashboardSidebarPro
         collapsed ? "justify-center" : "px-4"
       )}>
         {collapsed ? (
-          <img 
-            src="/assets/icon-logo.png" 
-            alt="Logo" 
-            className="h-20 w-20 max-w-none object-contain z-10" 
+          <img
+            src="/assets/icon-logo.png"
+            alt="Logo"
+            className="h-20 w-20 max-w-none object-contain z-10"
           />
         ) : (
-          <img 
-            src="/assets/full-logo.webp" 
-            alt="Coachingkart" 
-            className="h-24 object-contain z-10" 
+          <img
+            src="/assets/full-logo.webp"
+            alt="Coachingkart"
+            className="h-24 object-contain z-10"
           />
         )}
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-3 py-4 space-y-1">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path ||
             (item.subItems && item.subItems.some(sub => location.pathname === sub.path));
@@ -173,24 +170,6 @@ const DashboardSidebar = ({ collapsed, onToggle, userName }: DashboardSidebarPro
         })}
       </nav>
 
-      {/* Profile Section */}
-      <div className={cn(
-        "p-3 border-t border-sidebar-border mt-auto",
-        collapsed ? "flex justify-center" : "flex flex-col gap-2"
-      )}>
-        <div className={cn(
-          "flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-sidebar-accent transition-colors",
-          collapsed && "justify-center px-0"
-        )}>
-          <ProfileDropdown userName={displayName} />
-          {!collapsed && (
-            <div className="flex flex-col overflow-hidden">
-              <span className="text-sm font-semibold text-sidebar-primary truncate">{displayName}</span>
-              <span className="text-xs text-sidebar-foreground truncate">{displayRole}</span>
-            </div>
-          )}
-        </div>
-      </div>
 
       {/* Collapse Toggle Button */}
       <div className="border-t border-sidebar-border p-3">

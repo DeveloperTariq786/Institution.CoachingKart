@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Plus, Pencil, Trash2, Users2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { ROUTES } from "@/core/routes/paths";
@@ -11,7 +11,8 @@ import { useFaculty } from "@/features/faculty/hooks/useFaculty";
 import { Faculty as FacultyType } from "@/features/faculty/types/faculty";
 
 const Faculty = () => {
-  const { faculty, isLoading, fetchFaculty, deleteFaculty, hasLoaded } = useFaculty();
+  const navigate = useNavigate();
+  const { faculty, isLoading, fetchFaculty, deleteFaculty, isProcessing, hasLoaded } = useFaculty();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [facultyToDelete, setFacultyToDelete] = useState<FacultyType | null>(null);
@@ -27,8 +28,11 @@ const Faculty = () => {
 
   const handleConfirmDelete = async () => {
     if (facultyToDelete) {
-      await deleteFaculty(facultyToDelete.id);
-      setFacultyToDelete(null);
+      const success = await deleteFaculty(facultyToDelete.id);
+      if (success) {
+        setDeleteDialogOpen(false);
+        setFacultyToDelete(null);
+      }
     }
   };
 
@@ -87,7 +91,12 @@ const Faculty = () => {
       className: "text-right w-[150px]",
       cell: (f) => (
         <div className="flex justify-end gap-2 text-right">
-          <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-slate-100">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8 hover:bg-slate-100"
+            onClick={() => navigate(ROUTES.FACULTY_EDIT.replace(":facultyId", f.id), { state: { faculty: f } })}
+          >
             <Pencil className="h-4 w-4 text-slate-500" />
           </Button>
           <Button
@@ -140,6 +149,7 @@ const Faculty = () => {
         onConfirm={handleConfirmDelete}
         title="Delete Faculty Member"
         itemName={facultyToDelete?.name}
+        isLoading={isProcessing}
       />
     </DashboardLayout>
   );
