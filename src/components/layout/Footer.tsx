@@ -10,14 +10,14 @@ const Footer = () => {
           {/* Logo & Description */}
           <div className="text-center md:text-left">
             <Link to="/" className="flex items-center justify-center relative h-12 w-[180px] md:justify-start group mx-auto md:mx-0">
-              <img 
-                src="/assets/full-logo.webp" 
-                alt="Coachingkart" 
-                className="h-20 absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 top-1/2 -translate-y-1/2 object-contain" 
+              <img
+                src="/assets/full-logo.webp"
+                alt="Coachingkart"
+                className="h-20 absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 top-1/2 -translate-y-1/2 object-contain"
               />
             </Link>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Digitizing Your Coaching Institutions
+            <p className="text-sm text-slate-500 leading-relaxed">
+              Bridging the gap between traditional classrooms<br />and digital convenience.
             </p>
           </div>
 

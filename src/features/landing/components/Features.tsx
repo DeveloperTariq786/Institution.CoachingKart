@@ -54,7 +54,7 @@ const Features = () => {
             Our Features
           </h2>
           <p className="text-lg text-slate-500 leading-relaxed">
-            CoachingKart brings everything needed to run, manage, and grow coaching—without the hassle of managing it all themselves.
+            <span className="font-bold text-sky-600">CoachingKart</span> brings everything needed to run, manage, and grow coaching—without the hassle of managing it all themselves.
           </p>
         </div>
 
