@@ -34,3 +34,19 @@ export interface LoginFormValues {
     email: string;
     password: string;
 }
+
+/**
+ * Reset password request payload
+ */
+export interface ResetPasswordRequest {
+    email: string;
+    newPassword: string;
+}
+
+/**
+ * API Response wrapper for reset password
+ */
+export interface ResetPasswordResponse {
+    success: boolean;
+    message: string;
+}

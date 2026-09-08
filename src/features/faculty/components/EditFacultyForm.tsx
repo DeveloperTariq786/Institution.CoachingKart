@@ -58,7 +58,7 @@ export const EditFacultyForm = ({ faculty }: EditFacultyFormProps) => {
         {
             id: "name",
             label: "Full Name",
-            placeholder: "e.g., Dr. Raj Patel",
+            placeholder: "Faculty Full Name",
             value: formData.name,
             onChange: (value) => setFormData({ ...formData, name: value }),
             required: true,
@@ -67,7 +67,7 @@ export const EditFacultyForm = ({ faculty }: EditFacultyFormProps) => {
         {
             id: "experience",
             label: "Experience (Years)",
-            placeholder: "e.g., 10",
+            placeholder: "Faculty Experience Years",
             type: "number",
             value: formData.experience,
             onChange: (value) => setFormData({ ...formData, experience: Number(value) }),
@@ -77,7 +77,7 @@ export const EditFacultyForm = ({ faculty }: EditFacultyFormProps) => {
         {
             id: "tag",
             label: "Tag/Headline",
-            placeholder: "e.g., Chemistry Faculty",
+            placeholder: "Faculty Tag/Headline",
             value: formData.tag,
             onChange: (value) => setFormData({ ...formData, tag: value }),
             required: true,
@@ -86,7 +86,7 @@ export const EditFacultyForm = ({ faculty }: EditFacultyFormProps) => {
         {
             id: "subject",
             label: "Specialization Subject",
-            placeholder: "Select a subject",
+            placeholder: "Faculty Specialization Subject",
             value: getSubjectName(formData.subjectId),
             onChange: handleSubjectChange,
             required: true,
@@ -97,7 +97,7 @@ export const EditFacultyForm = ({ faculty }: EditFacultyFormProps) => {
         {
             id: "description",
             label: "Detailed Description",
-            placeholder: "Chemistry Faculty with expertise in Organic Chemistry...",
+            placeholder: "Faculty Detailed Description",
             value: formData.description,
             onChange: (value) => setFormData({ ...formData, description: value }),
             required: true,

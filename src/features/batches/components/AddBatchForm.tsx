@@ -146,6 +146,7 @@ export const AddBatchForm = () => {
             accept: "image/*",
             icon: Image,
             colSpan: 2,
+            helperText: "800x450 image required.",
         },
         {
             id: "description",

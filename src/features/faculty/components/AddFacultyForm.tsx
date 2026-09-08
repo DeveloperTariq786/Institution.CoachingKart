@@ -48,7 +48,7 @@ export const AddFacultyForm = () => {
         {
             id: "name",
             label: "Full Name",
-            placeholder: "e.g., Dr. Raj Patel",
+            placeholder: "Faculty Full Name",
             value: formData.name,
             onChange: (value) => setFormData({ ...formData, name: value }),
             required: true,
@@ -57,7 +57,7 @@ export const AddFacultyForm = () => {
         {
             id: "experience",
             label: "Experience",
-            placeholder: "e.g., 10+ Yrs",
+            placeholder: "Faculty Experience Years",
             value: formData.experience,
             onChange: (value) => setFormData({ ...formData, experience: value }),
             required: true,
@@ -66,7 +66,7 @@ export const AddFacultyForm = () => {
         {
             id: "tag",
             label: "Tag/Headline",
-            placeholder: "e.g., Chemistry Faculty",
+            placeholder: "Faculty Tag/Headline",
             value: formData.tag,
             onChange: (value) => setFormData({ ...formData, tag: value }),
             required: true,
@@ -75,7 +75,7 @@ export const AddFacultyForm = () => {
         {
             id: "subject",
             label: "Specialization Subject",
-            placeholder: "Select a subject",
+            placeholder: "Faculty Specialization Subject",
             value: getSubjectName(formData.subjectId),
             onChange: handleSubjectChange,
             required: true,
@@ -86,7 +86,7 @@ export const AddFacultyForm = () => {
         {
             id: "profileimage",
             label: "Profile Image",
-            placeholder: "Upload image",
+            placeholder: "Faculty Profile Image",
             value: formData.profileimage,
             onChange: (file) => setFormData({ ...formData, profileimage: file }),
             required: true,
@@ -98,7 +98,7 @@ export const AddFacultyForm = () => {
         {
             id: "description",
             label: "Detailed Description",
-            placeholder: "Chemistry Faculty with expertise in Organic Chemistry...",
+            placeholder: "Faculty Detailed Description",
             value: formData.description,
             onChange: (value) => setFormData({ ...formData, description: value }),
             required: true,

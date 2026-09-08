@@ -78,7 +78,7 @@ export const AddResultForm = () => {
         const profiles = entries.map(e => e.profile).filter((p): p is File => p !== null);
 
         if (profiles.length !== results.length) {
-            alert("Please upload a profile image for each result.");
+            alert("Please upload a student photo for each result.");
             return;
         }
 
@@ -117,7 +117,7 @@ export const AddResultForm = () => {
                                                 ) : (
                                                     <div className="flex flex-col items-center gap-1 text-muted-foreground">
                                                         <UploadCloud className="h-8 w-8 opacity-40" />
-                                                        <span className="text-[10px] text-center px-2">Upload image</span>
+                                                        <span className="text-[10px] text-center px-2">Upload Student Photo</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -178,7 +178,7 @@ export const AddResultForm = () => {
                                                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
                                                     className="pl-10"
-                                                    placeholder="e.g. 2024"
+                                                    placeholder="Session Year"
                                                     value={entry.data.session}
                                                     onChange={(e) => updateEntry(index, "session", e.target.value)}
                                                     required
@@ -192,7 +192,7 @@ export const AddResultForm = () => {
                                                 <Trophy className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
                                                     className="pl-10"
-                                                    placeholder="e.g. 1"
+                                                    placeholder="Rank"
                                                     value={entry.data.rank}
                                                     onChange={(e) => updateEntry(index, "rank", e.target.value)}
                                                     required
@@ -206,7 +206,7 @@ export const AddResultForm = () => {
                                                 <FileType className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
                                                     className="pl-10"
-                                                    placeholder="e.g. 600/720"
+                                                    placeholder="Score"
                                                     value={entry.data.score}
                                                     onChange={(e) => updateEntry(index, "score", e.target.value)}
                                                     required

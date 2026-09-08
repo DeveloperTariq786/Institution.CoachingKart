@@ -5,6 +5,7 @@ import { useCenters } from "../hooks/useCenters";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/core/routes/paths";
 import { Center } from "../types/center";
+import { CENTER_DISPLAY_IMAGE_REQUIREMENT } from "../constants";
 
 interface EditCenterFormProps {
     center: Center;
@@ -54,7 +55,7 @@ export const EditCenterForm = ({ center }: EditCenterFormProps) => {
         {
             id: "name",
             label: "Center Name",
-            placeholder: "Enter center name (e.g., Main Branch, Patna)",
+            placeholder: "Institute Center Name",
             value: formData.name,
             onChange: (value) => setFormData({ ...formData, name: value }),
             required: true,
@@ -64,7 +65,7 @@ export const EditCenterForm = ({ center }: EditCenterFormProps) => {
         {
             id: "phone",
             label: "Contact Phone",
-            placeholder: "Enter phone number",
+            placeholder: "Institute Center Phone",
             value: formData.phone,
             onChange: (value) => setFormData({ ...formData, phone: value }),
             required: true,
@@ -73,18 +74,19 @@ export const EditCenterForm = ({ center }: EditCenterFormProps) => {
         {
             id: "image",
             label: "Center Display Image (Optional)",
-            placeholder: "Upload new center photo to replace",
+            placeholder: "Institute Center Display Image",
             value: formData.image,
             onChange: (file) => setFormData({ ...formData, image: file }),
             required: false,
             componentType: "file",
             icon: ImageIcon,
             accept: "image/*",
+            helperText: CENTER_DISPLAY_IMAGE_REQUIREMENT,
         },
         {
             id: "address",
             label: "Street Address",
-            placeholder: "e.g., Parray Pora, Srinagar",
+            placeholder: "Institute Center Address",
             value: formData.address,
             onChange: (value) => setFormData({ ...formData, address: value }),
             required: true,
@@ -93,7 +95,7 @@ export const EditCenterForm = ({ center }: EditCenterFormProps) => {
         {
             id: "city",
             label: "City",
-            placeholder: "e.g., Srinagar",
+            placeholder: "Institute Center City",
             value: formData.city,
             onChange: (value) => setFormData({ ...formData, city: value }),
             required: true,
@@ -102,7 +104,7 @@ export const EditCenterForm = ({ center }: EditCenterFormProps) => {
         {
             id: "state",
             label: "State",
-            placeholder: "e.g., Jammu & Kashmir",
+            placeholder: "Institute Center State",
             value: formData.state,
             onChange: (value) => setFormData({ ...formData, state: value }),
             required: true,
@@ -111,7 +113,7 @@ export const EditCenterForm = ({ center }: EditCenterFormProps) => {
         {
             id: "postalCode",
             label: "Postal Code",
-            placeholder: "e.g., 190015",
+            placeholder: "Institute Center Postal Code",
             value: formData.postalCode,
             onChange: (value) => setFormData({ ...formData, postalCode: value }),
             required: true,
@@ -120,7 +122,7 @@ export const EditCenterForm = ({ center }: EditCenterFormProps) => {
         {
             id: "country",
             label: "Country",
-            placeholder: "e.g., India",
+            placeholder: "Institute Center Country",
             value: formData.country,
             onChange: (value) => setFormData({ ...formData, country: value }),
             required: true,
@@ -150,7 +152,7 @@ export const EditCenterForm = ({ center }: EditCenterFormProps) => {
         {
             id: "latitude",
             label: "Latitude",
-            placeholder: "e.g., 25.5941",
+            placeholder: "Institute Center Latitude",
             value: formData.latitude,
             onChange: (value) => setFormData({ ...formData, latitude: value }),
             required: true,
@@ -159,7 +161,7 @@ export const EditCenterForm = ({ center }: EditCenterFormProps) => {
         {
             id: "longitude",
             label: "Longitude",
-            placeholder: "e.g., 85.1376",
+            placeholder: "Institute Center Longitude",
             value: formData.longitude,
             onChange: (value) => setFormData({ ...formData, longitude: value }),
             required: true,

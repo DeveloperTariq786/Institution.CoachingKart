@@ -1,5 +1,7 @@
 import { GraduationCap } from "lucide-react";
 
+export const PROGRAMS_EMPTY_MESSAGE = "No programs.";
+
 interface ProgramRowInfoProps {
     name: string;
     courseName?: string;

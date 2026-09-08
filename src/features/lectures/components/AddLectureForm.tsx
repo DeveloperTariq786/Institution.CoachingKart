@@ -8,6 +8,7 @@ import { useBatches } from "@/features/batches/hooks/useBatches";
 import { useInstitutionProfile } from "@/features/Institution/hooks/useInstitutionProfile";
 import { Type, FileText, Book, User, Video, Image as ImageIcon, Layers } from "lucide-react";
 import { useState, useEffect } from "react";
+import { LECTURE_THUMBNAIL_REQUIREMENT } from "@/features/lectures/constants";
 
 export const AddLectureForm = () => {
     const navigate = useNavigate();
@@ -119,7 +120,7 @@ export const AddLectureForm = () => {
         {
             id: "title",
             label: "Lecture Title",
-            placeholder: "e.g., Why Atoms are non living",
+            placeholder: "Lecture Title",
             value: formData.title,
             onChange: (value) => setFormData({ ...formData, title: value }),
             required: true,
@@ -129,7 +130,7 @@ export const AddLectureForm = () => {
         {
             id: "batch",
             label: "Batch",
-            placeholder: "Select a batch",
+            placeholder: "Select Batch",
             value: getBatchName(selectedBatchId),
             onChange: handleBatchChange,
             required: true,
@@ -141,7 +142,7 @@ export const AddLectureForm = () => {
         {
             id: "subject",
             label: "Subject",
-            placeholder: selectedBatchId ? "Select a subject" : "Select batch first",
+            placeholder: selectedBatchId ? "Select Subject" : "Select Batch first",
             value: getSubjectName(formData.batchSubjectId),
             onChange: handleSubjectChange,
             required: true,
@@ -152,7 +153,7 @@ export const AddLectureForm = () => {
         {
             id: "faculty",
             label: "Faculty",
-            placeholder: "Select faculty",
+            placeholder: "Select Faculty",
             value: getFacultyName(formData.facultyId),
             onChange: handleFacultyChange,
             required: true,
@@ -163,18 +164,19 @@ export const AddLectureForm = () => {
         {
             id: "thumbnail",
             label: "Thumbnail Image",
-            placeholder: "Upload thumbnail",
+            placeholder: "Lecture Thumbnail Image",
             value: formData.thumbnail,
             onChange: (file) => setFormData({ ...formData, thumbnail: file }),
             required: true,
             componentType: "file",
             icon: ImageIcon,
             accept: "image/*",
+            helperText: LECTURE_THUMBNAIL_REQUIREMENT,
         },
         {
             id: "video",
             label: "Lecture Video",
-            placeholder: "Upload video file",
+            placeholder: "Lecture Video File",
             value: formData.video,
             onChange: (file) => setFormData({ ...formData, video: file }),
             required: true,
@@ -186,7 +188,7 @@ export const AddLectureForm = () => {
         {
             id: "description",
             label: "Description",
-            placeholder: "Enter lecture description...",
+            placeholder: "Lecture Detailed Description",
             value: formData.description,
             onChange: (value) => setFormData({ ...formData, description: value }),
             required: true,

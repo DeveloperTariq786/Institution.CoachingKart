@@ -130,10 +130,9 @@ export const AddBannerForm = () => {
                                                 <Type className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
                                                     className="pl-10"
-                                                    placeholder="e.g. Summer Campaign"
+                                                    placeholder="Banner Heading"
                                                     value={entry.heading}
                                                     onChange={(e) => updateField(index, "heading", e.target.value)}
-                                                    required
                                                 />
                                             </div>
                                         </div>
@@ -143,10 +142,9 @@ export const AddBannerForm = () => {
                                                 <FileText className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
                                                     className="pl-10"
-                                                    placeholder="e.g. Join our summer courses"
+                                                    placeholder="Banner Description"
                                                     value={entry.description}
                                                     onChange={(e) => updateField(index, "description", e.target.value)}
-                                                    required
                                                 />
                                             </div>
                                         </div>

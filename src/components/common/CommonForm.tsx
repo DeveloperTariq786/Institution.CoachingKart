@@ -31,6 +31,7 @@ export interface FormFieldConfig {
     colSpan?: 1 | 2;
     accept?: string;
     disabled?: boolean;
+    helperText?: string;
 }
 
 interface CommonFormProps {
@@ -230,6 +231,11 @@ const CommonForm = ({
                                 <FormInput field={field} />
                             )}
                         </div>
+                        {field.helperText && (
+                            <p className="text-[13px] text-muted-foreground/70 leading-relaxed">
+                                {field.helperText}
+                            </p>
+                        )}
                     </div>
                 ))}
             </div>

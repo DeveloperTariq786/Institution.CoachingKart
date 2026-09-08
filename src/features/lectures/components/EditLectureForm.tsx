@@ -6,6 +6,7 @@ import { useFaculty } from "@/features/faculty/hooks/useFaculty";
 import { Type, FileText, User, Image as ImageIcon, Video } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Lecture } from "../types/lecture";
+import { LECTURE_THUMBNAIL_REQUIREMENT } from "@/features/lectures/constants";
 
 interface EditLectureFormProps {
     lecture: Lecture;
@@ -65,7 +66,7 @@ export const EditLectureForm = ({ lecture }: EditLectureFormProps) => {
         {
             id: "title",
             label: "Lecture Title",
-            placeholder: "e.g., Why Atoms are non living",
+            placeholder: "Lecture Title",
             value: formData.title,
             onChange: (value) => setFormData({ ...formData, title: value }),
             required: true,
@@ -75,7 +76,7 @@ export const EditLectureForm = ({ lecture }: EditLectureFormProps) => {
         {
             id: "faculty",
             label: "Faculty",
-            placeholder: "Select faculty",
+            placeholder: "Select Faculty",
             value: getFacultyName(formData.facultyId),
             onChange: handleFacultyChange,
             required: true,
@@ -87,7 +88,7 @@ export const EditLectureForm = ({ lecture }: EditLectureFormProps) => {
         {
             id: "thumbnail",
             label: "New Thumbnail Image (Optional)",
-            placeholder: "Upload new thumbnail to replace current one",
+            placeholder: "Lecture Thumbnail Image",
             value: formData.thumbnail,
             onChange: (file) => setFormData({ ...formData, thumbnail: file }),
             required: false,
@@ -95,11 +96,12 @@ export const EditLectureForm = ({ lecture }: EditLectureFormProps) => {
             icon: ImageIcon,
             accept: "image/*",
             colSpan: 2,
+            helperText: LECTURE_THUMBNAIL_REQUIREMENT,
         },
         {
             id: "description",
             label: "Description",
-            placeholder: "Enter lecture description...",
+            placeholder: "Lecture Detailed Description",
             value: formData.description,
             onChange: (value) => setFormData({ ...formData, description: value }),
             required: true,

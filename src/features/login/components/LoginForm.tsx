@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Mail, Lock } from "lucide-react";
 import CommonForm, { FormFieldConfig } from "@/components/common/CommonForm";
 import { useLogin } from "@/features/login/hooks/useLogin";
+import { ROUTES } from "@/core/routes/paths";
 
 interface LoginFormProps {
     onSuccess?: () => void;
@@ -28,7 +30,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
             id: "email",
             label: "Email Address",
             type: "email",
-            placeholder: "name@company.com",
+            placeholder: "Your Email",
             value: email,
             onChange: setEmail,
             required: true,
@@ -39,7 +41,7 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
             id: "password",
             label: "Password",
             type: "password",
-            placeholder: "••••••••",
+            placeholder: "Your Password",
             value: password,
             onChange: setPassword,
             required: true,
@@ -58,9 +60,12 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
             submitButtonClassName="w-full bg-sky-600 hover:bg-sky-700 text-white shadow-sky-600/20"
         >
             <div className="flex justify-end -mt-4">
-                <a href="#" className="text-xs font-medium text-sky-600 hover:text-sky-700 transition-colors">
+                <Link
+                    to={ROUTES.FORGOT_PASSWORD}
+                    className="text-xs font-medium text-sky-600 hover:text-sky-700 transition-colors"
+                >
                     Forgot password?
-                </a>
+                </Link>
             </div>
         </CommonForm>
     );

@@ -44,7 +44,7 @@ export function EditStudentForm({ student }: EditStudentFormProps) {
         {
             id: "name",
             label: "Full Name",
-            placeholder: "Enter full name",
+            placeholder: "Full Name",
             value: formData.name || "",
             onChange: (val) => setFormData({ ...formData, name: val }),
             required: true,
@@ -55,7 +55,7 @@ export function EditStudentForm({ student }: EditStudentFormProps) {
             id: "email",
             label: "Email Address",
             type: "email",
-            placeholder: "Enter email address",
+            placeholder: "Email Address",
             value: formData.email || "",
             onChange: (val) => setFormData({ ...formData, email: val }),
             required: true,
@@ -64,7 +64,7 @@ export function EditStudentForm({ student }: EditStudentFormProps) {
         {
             id: "phone",
             label: "Phone Number",
-            placeholder: "e.g., +91-9876543210",
+            placeholder: "Phone Number",
             value: formData.phone || "",
             onChange: (val) => setFormData({ ...formData, phone: val }),
             required: false,
@@ -73,7 +73,7 @@ export function EditStudentForm({ student }: EditStudentFormProps) {
         {
             id: "batch",
             label: "Assign Batch",
-            placeholder: "Select a batch",
+            placeholder: "Select Batch",
             value: batches.find(b => b.id === formData.batchId)?.name || "",
             onChange: (val) => {
                 const batch = batches.find(b => b.name === val);
@@ -88,7 +88,7 @@ export function EditStudentForm({ student }: EditStudentFormProps) {
             id: "feePaid",
             label: "Fee Paid",
             type: "number",
-            placeholder: "Enter amount",
+            placeholder: "Fee Paid",
             value: formData.feePaid || 0,
             onChange: (val) => setFormData({ ...formData, feePaid: Number(val) }),
             required: true,
@@ -98,7 +98,7 @@ export function EditStudentForm({ student }: EditStudentFormProps) {
             id: "discount",
             label: "Discount",
             type: "number",
-            placeholder: "Enter discount amount",
+            placeholder: "Discount",
             value: formData.discount || 0,
             onChange: (val) => setFormData({ ...formData, discount: Number(val) }),
             required: true,
@@ -108,7 +108,7 @@ export function EditStudentForm({ student }: EditStudentFormProps) {
             id: "expiresAt",
             label: "Expires At",
             type: "datetime-local",
-            placeholder: "Select expiration date",
+            placeholder: "Expires At",
             value: formData.expiresAt || "",
             onChange: (val) => setFormData({ ...formData, expiresAt: val }),
             required: false,

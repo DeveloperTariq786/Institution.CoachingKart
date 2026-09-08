@@ -127,7 +127,7 @@ export const AddGalleryForm = () => {
                                                 <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                 <Input
                                                     className="pl-10"
-                                                    placeholder="e.g. Classroom, Lab, Library"
+                                                    placeholder="Gallery Tag"
                                                     value={entry.tag}
                                                     onChange={(e) => updateTag(index, e.target.value)}
                                                     required

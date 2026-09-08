@@ -123,7 +123,7 @@ export const AddResourceForm = ({ lectureId }: AddResourceFormProps) => {
                     {links.map((link, i) => (
                         <div key={i} className="flex gap-2">
                             <Input
-                                placeholder="https://example.com"
+                                placeholder="External Link"
                                 value={link}
                                 onChange={(e) => handleLinkChange(i, e.target.value)}
                                 className="bg-white"
@@ -156,7 +156,7 @@ export const AddResourceForm = ({ lectureId }: AddResourceFormProps) => {
                                 <RichTextEditor
                                     content={text}
                                     onChange={(content) => handleTextChange(i, content)}
-                                    placeholder="Enter lecture details or notes..."
+                                    placeholder="Text Content"
                                 />
                             </div>
                             {texts.length > 1 && (

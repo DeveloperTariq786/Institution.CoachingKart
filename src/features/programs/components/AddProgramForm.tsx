@@ -40,7 +40,7 @@ export const AddProgramForm = () => {
         {
             id: "name",
             label: "Program Name",
-            placeholder: "e.g., Class 11, Dropper Batch, Crash Course",
+            placeholder: "Program Name",
             value: formData.name,
             onChange: (value) => setFormData({ ...formData, name: value }),
             required: true,
@@ -50,7 +50,7 @@ export const AddProgramForm = () => {
         {
             id: "course",
             label: "Select Course",
-            placeholder: "Select a course",
+            placeholder: "Select Course",
             value: getCourseName(formData.courseId),
             onChange: handleCourseChange,
             required: true,

@@ -34,7 +34,7 @@ const InstitutionProfileForm = ({ initialData, onSubmit, isLoading }: Institutio
         {
             id: "institutionName",
             label: "Institution Name",
-            placeholder: "e.g. Excellence Academy",
+            placeholder: "Your Institute Name",
             value: formData.institutionName,
             onChange: (value) => setFormData({ ...formData, institutionName: value }),
             required: true,
@@ -45,7 +45,7 @@ const InstitutionProfileForm = ({ initialData, onSubmit, isLoading }: Institutio
             id: "tuitionEmail",
             label: "Institution Email",
             type: "email",
-            placeholder: "contact@example.com",
+            placeholder: "Your Institute Email",
             value: formData.tuitionEmail,
             onChange: (value) => setFormData({ ...formData, tuitionEmail: value }),
             required: true,
@@ -54,7 +54,7 @@ const InstitutionProfileForm = ({ initialData, onSubmit, isLoading }: Institutio
         {
             id: "tuitionPhone",
             label: "Institution Phone",
-            placeholder: "7889396003",
+            placeholder: "Your Institute Phone",
             value: formData.tuitionPhone,
             onChange: (value) => setFormData({ ...formData, tuitionPhone: value }),
             required: true,
@@ -63,7 +63,7 @@ const InstitutionProfileForm = ({ initialData, onSubmit, isLoading }: Institutio
         {
             id: "description",
             label: "Description",
-            placeholder: "Tell us about your institution...",
+            placeholder: "A brief description of your institute",
             value: formData.description,
             onChange: (value) => setFormData({ ...formData, description: value }),
             icon: FileText,
@@ -73,7 +73,7 @@ const InstitutionProfileForm = ({ initialData, onSubmit, isLoading }: Institutio
         {
             id: "address",
             label: "Address",
-            placeholder: "123 Tech Park",
+            placeholder: "Your Institute Address",
             value: formData.location.address,
             onChange: (value) => setFormData({ ...formData, location: { ...formData.location, address: value } }),
             required: true,
@@ -83,7 +83,7 @@ const InstitutionProfileForm = ({ initialData, onSubmit, isLoading }: Institutio
         {
             id: "city",
             label: "City",
-            placeholder: "Bangalore",
+            placeholder: "Your Institute City",
             value: formData.location.city,
             onChange: (value) => setFormData({ ...formData, location: { ...formData.location, city: value } }),
             required: true,
@@ -101,7 +101,7 @@ const InstitutionProfileForm = ({ initialData, onSubmit, isLoading }: Institutio
                     onChange={(file) => setFormData({ ...formData, logo: file })}
                     onRemove={() => setFormData({ ...formData, logo: "" })}
                     label="Upload Logo"
-                    description="Square image, minimum 200x200px. Appears in header and branding."
+                    description="1024x1024. Appears in header and branding."
                     aspectRatio="square"
                 />
             ),
@@ -119,7 +119,7 @@ const InstitutionProfileForm = ({ initialData, onSubmit, isLoading }: Institutio
                     onChange={(file) => setFormData({ ...formData, coverimage: file })}
                     onRemove={() => setFormData({ ...formData, coverimage: "" })}
                     label="Upload Cover Image"
-                    description="Recommended: 1500x500px. Displayed at the top of your public profile."
+                    description="1450x800. Displayed at the top of your public profile."
                     aspectRatio="video"
                 />
             ),
