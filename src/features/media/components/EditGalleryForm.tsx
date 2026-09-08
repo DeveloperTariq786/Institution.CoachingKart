@@ -40,7 +40,7 @@ export const EditGalleryForm = ({ galleryItem }: EditGalleryFormProps) => {
         {
             id: "tag",
             label: "Tag / Category",
-            placeholder: "e.g., Classroom, Lab, Sports",
+            placeholder: "Gallery Tag",
             value: formData.tag,
             onChange: (value) => setFormData({ ...formData, tag: value }),
             required: true,
@@ -49,7 +49,7 @@ export const EditGalleryForm = ({ galleryItem }: EditGalleryFormProps) => {
         {
             id: "image",
             label: "Gallery Image (Optional)",
-            placeholder: "Upload new image to replace current",
+            placeholder: "Gallery Display Image",
             value: formData.image,
             onChange: (file) => setFormData({ ...formData, image: file }),
             required: false,

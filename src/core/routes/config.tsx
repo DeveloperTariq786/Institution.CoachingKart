@@ -1,6 +1,7 @@
 import { ROUTES } from "./paths";
 import Landing from "@/pages/landing/Landing";
 import Login from "@/pages/login/Login";
+import ForgotPassword from "@/pages/login/ForgotPassword";
 import Onboarding from "@/pages/onboarding/Onboarding";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import Institution from "@/pages/Institution/Institution";
@@ -54,6 +55,7 @@ export interface RouteConfig {
 export const APP_ROUTES: RouteConfig[] = [
     { path: ROUTES.LANDING, element: <Landing />, title: "Landing" },
     { path: ROUTES.LOGIN, element: <Login />, title: "Login" },
+    { path: ROUTES.FORGOT_PASSWORD, element: <ForgotPassword />, title: "Forgot Password" },
     { path: ROUTES.ONBOARDING, element: <Onboarding />, title: "Onboarding" },
     { path: ROUTES.DASHBOARD, element: <Dashboard />, title: "Dashboard", protected: true },
     { path: ROUTES.INSTITUTION, element: <Institution />, title: "Institution", protected: true },

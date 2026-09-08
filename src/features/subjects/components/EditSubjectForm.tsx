@@ -57,7 +57,7 @@ export const EditSubjectForm = ({ subject }: EditSubjectFormProps) => {
         {
             id: "name",
             label: "Subject Name",
-            placeholder: "e.g., Physics, Mathematics",
+            placeholder: "Subject Name",
             value: formData.name,
             onChange: (value) => setFormData({ ...formData, name: value }),
             required: true,
@@ -67,7 +67,7 @@ export const EditSubjectForm = ({ subject }: EditSubjectFormProps) => {
         {
             id: "icon",
             label: "Select Icon",
-            placeholder: "Icon type",
+            placeholder: "Select Icon",
             value: formData.iconLabel,
             onChange: handleIconChange,
             required: true,

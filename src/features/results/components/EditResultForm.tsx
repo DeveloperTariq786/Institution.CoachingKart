@@ -92,7 +92,7 @@ export const EditResultForm = ({ result }: EditResultFormProps) => {
         {
             id: "course",
             label: "Course",
-            placeholder: "Select a course",
+            placeholder: "Select Course",
             value: getCourseName(formData.courseId),
             onChange: handleCourseChange,
             required: true,
@@ -103,7 +103,7 @@ export const EditResultForm = ({ result }: EditResultFormProps) => {
         {
             id: "student",
             label: "Student",
-            placeholder: "Select student",
+            placeholder: "Select Student",
             value: getStudentDisplayName(formData.enrollmentId),
             onChange: handleStudentChange,
             required: true,
@@ -114,7 +114,7 @@ export const EditResultForm = ({ result }: EditResultFormProps) => {
         {
             id: "session",
             label: "Session Year",
-            placeholder: "e.g., 2024",
+            placeholder: "Session Year",
             value: formData.session,
             onChange: (value) => setFormData({ ...formData, session: value }),
             required: true,
@@ -123,7 +123,7 @@ export const EditResultForm = ({ result }: EditResultFormProps) => {
         {
             id: "rank",
             label: "Rank achieved",
-            placeholder: "e.g., 1",
+            placeholder: "Rank",
             value: formData.rank,
             onChange: (value) => setFormData({ ...formData, rank: value }),
             required: true,
@@ -132,7 +132,7 @@ export const EditResultForm = ({ result }: EditResultFormProps) => {
         {
             id: "score",
             label: "Score",
-            placeholder: "e.g., 600/720",
+            placeholder: "Score",
             value: formData.score,
             onChange: (value) => setFormData({ ...formData, score: value }),
             required: true,
@@ -141,7 +141,7 @@ export const EditResultForm = ({ result }: EditResultFormProps) => {
         {
             id: "profile",
             label: "Student Photo (Optional)",
-            placeholder: "Upload new student photo to replace",
+            placeholder: "Student Photo",
             value: formData.profile,
             onChange: (file) => setFormData({ ...formData, profile: file }),
             required: false,

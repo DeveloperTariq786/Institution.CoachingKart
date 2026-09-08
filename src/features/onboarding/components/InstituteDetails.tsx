@@ -26,7 +26,7 @@ const InstituteDetails = ({ data, updateData, onNext }: InstituteDetailsProps) =
     {
       id: "institutionName",
       label: "Institution Name",
-      placeholder: "e.g. Test Tuition Academy",
+      placeholder: "Your Institute Name",
       value: data.institutionName,
       onChange: (value) => updateData({ institutionName: value }),
       required: true,
@@ -37,7 +37,7 @@ const InstituteDetails = ({ data, updateData, onNext }: InstituteDetailsProps) =
       id: "tuitionEmail",
       label: "Tuition Email",
       type: "email",
-      placeholder: "tuition@example.com",
+      placeholder: "Your Institute Email",
       value: data.tuitionEmail,
       onChange: (value) => updateData({ tuitionEmail: value }),
       required: true,
@@ -46,7 +46,7 @@ const InstituteDetails = ({ data, updateData, onNext }: InstituteDetailsProps) =
     {
       id: "tuitionPhone",
       label: "Tuition Phone",
-      placeholder: "+1-555-123-4567",
+      placeholder: "Your Institute Phone",
       value: data.tuitionPhone,
       onChange: (value) => updateData({ tuitionPhone: value }),
       required: true,
@@ -55,7 +55,7 @@ const InstituteDetails = ({ data, updateData, onNext }: InstituteDetailsProps) =
     {
       id: "description",
       label: "Description",
-      placeholder: "A brief description of your institution",
+      placeholder: "A brief description of your institute",
       value: data.description,
       onChange: (value) => updateData({ description: value }),
       icon: FileText,
@@ -65,7 +65,7 @@ const InstituteDetails = ({ data, updateData, onNext }: InstituteDetailsProps) =
     {
       id: "address",
       label: "Address",
-      placeholder: "123 Main St",
+      placeholder: "Your Institute Address",
       value: data.address,
       onChange: (value) => updateData({ address: value }),
       required: true,
@@ -75,7 +75,7 @@ const InstituteDetails = ({ data, updateData, onNext }: InstituteDetailsProps) =
     {
       id: "city",
       label: "City",
-      placeholder: "Anytown",
+      placeholder: "Your Institute City",
       value: data.city,
       onChange: (value) => updateData({ city: value }),
       required: true,
@@ -84,7 +84,7 @@ const InstituteDetails = ({ data, updateData, onNext }: InstituteDetailsProps) =
     {
       id: "country",
       label: "Country",
-      placeholder: "US",
+      placeholder: "Your Institute Country",
       value: data.country,
       onChange: (value) => updateData({ country: value }),
       required: true,

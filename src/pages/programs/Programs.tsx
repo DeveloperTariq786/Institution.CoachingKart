@@ -9,7 +9,7 @@ import { DeleteConfirmDialog } from "@/components/common/DeleteConfirmDialog";
 import { DataTable, Column } from "@/components/common/DataTable";
 import { usePrograms } from "@/features/programs/hooks/usePrograms";
 import { Program } from "@/features/programs/types/program";
-import { ProgramRowInfo } from "@/features/programs/components/ProgramRowInfo";
+import { ProgramRowInfo, PROGRAMS_EMPTY_MESSAGE } from "@/features/programs/components/ProgramRowInfo";
 import { useCourses } from "@/features/courses/hooks/useCourses";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
@@ -160,6 +160,7 @@ const Programs = () => {
               columns={columns}
               data={programs}
               isLoading={isLoading || !hasLoaded}
+              emptyMessage={PROGRAMS_EMPTY_MESSAGE}
             />
 
             {pagination && pagination.pages > 1 && (

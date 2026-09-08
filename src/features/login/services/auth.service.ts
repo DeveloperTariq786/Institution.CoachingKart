@@ -5,7 +5,7 @@
 
 import { apiClient } from '@/core/api';
 import { AUTH_ENDPOINTS } from '@/core/api/endpoint/endpoints';
-import { LoginRequest, LoginResponse } from '@/features/login/types';
+import { LoginRequest, LoginResponse, ResetPasswordRequest, ResetPasswordResponse } from '@/features/login/types';
 
 /**
  * Login API call
@@ -24,9 +24,19 @@ export async function logoutApi(): Promise<void> {
     await apiClient.post(AUTH_ENDPOINTS.LOGOUT);
 }
 
+/**
+ * Reset password API call
+ * @param payload - Email and new password
+ */
+export async function resetPasswordApi(payload: ResetPasswordRequest): Promise<ResetPasswordResponse> {
+    const response = await apiClient.post<ResetPasswordResponse>(AUTH_ENDPOINTS.RESET_PASSWORD, payload);
+    return response.data;
+}
+
 export const authService = {
     login: loginApi,
     logout: logoutApi,
+    resetPassword: resetPasswordApi,
 };
 
 export default authService;

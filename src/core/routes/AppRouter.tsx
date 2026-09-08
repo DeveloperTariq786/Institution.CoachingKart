@@ -3,7 +3,7 @@ import { APP_ROUTES } from "./config";
 import { ProtectedRoute, PublicRoute } from "./guards";
 
 // Public routes that should redirect to dashboard if authenticated
-const PUBLIC_PATHS = ["/", "/login", "/onboarding"];
+const PUBLIC_PATHS = ["/", "/login", "/forgot-password", "/onboarding"];
 
 const AppRouter = () => {
     return (

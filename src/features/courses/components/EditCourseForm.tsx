@@ -76,7 +76,7 @@ export const EditCourseForm = ({ course }: EditCourseFormProps) => {
         {
             id: "name",
             label: "Course Name",
-            placeholder: "e.g., NEET, IIT JEE, Pre Foundation",
+            placeholder: "Course Name",
             value: formData.name,
             onChange: (value) => setFormData({ ...formData, name: value }),
             required: true,
