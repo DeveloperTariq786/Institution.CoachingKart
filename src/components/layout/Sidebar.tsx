@@ -86,15 +86,15 @@ const DashboardSidebar = ({ collapsed, onToggle }: DashboardSidebarProps) => {
       )}>
         {collapsed ? (
           <img
-            src="/assets/icon-logo.png"
+            src="/logos/icon.svg"
             alt="Logo"
-            className="h-20 w-20 max-w-none object-contain z-10"
+            className="h-8 w-8 object-contain"
           />
         ) : (
           <img
-            src="/assets/full-logo.webp"
+            src="/logos/full.svg"
             alt="Coachingkart"
-            className="h-24 object-contain z-10"
+            className="h-8 w-auto max-w-full object-contain"
           />
         )}
       </div>

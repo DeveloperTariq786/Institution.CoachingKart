@@ -9,11 +9,11 @@ const Footer = () => {
         <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
           {/* Logo & Description */}
           <div className="text-center md:text-left">
-            <Link to="/" className="flex items-center justify-center relative h-12 w-[180px] md:justify-start group mx-auto md:mx-0">
+            <Link to="/" className="flex items-center justify-center relative h-10 w-[160px] mb-3 md:justify-start group mx-auto md:mx-0">
               <img
-                src="/assets/full-logo.webp"
+                src="/logos/full.svg"
                 alt="Coachingkart"
-                className="h-20 absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 top-1/2 -translate-y-1/2 object-contain"
+                className="h-9 absolute left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 top-1/2 -translate-y-1/2 object-contain"
               />
             </Link>
             <p className="text-sm text-slate-500 leading-relaxed">
